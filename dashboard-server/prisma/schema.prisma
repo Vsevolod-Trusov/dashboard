@@ -10,8 +10,37 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model User {
-  id    Int     @id @default(autoincrement())
-  email String  @unique
-  name  String?
+model Credential {
+  id       String   @id @default(uuid())
+  name     String
+  lastname String
+  password String
+  profile  Profile?
+}
+
+model Department {
+  id          String    @id @default(uuid())
+  name        String
+  description String
+  profiles    Profile[]
+  createdAt   DateTime  @default(now())
+}
+
+model Company {
+  name      String    @unique
+  createdAt DateTime  @default(now())
+  profiles  Profile[]
+}
+
+model Profile {
+  id            String      @id @default(uuid())
+  credentials   Credential  @relation(fields: [credentialsId], references: [id], onDelete: Cascade)
+  credentialsId String      @unique
+  company       Company     @relation(fields: [companyName], references: [name])
+  companyName   String
+  department    Department? @relation(fields: [departmentId], references: [id])
+  departmentId  String?
+  email         String      @unique
+  role          String
+  isHeader      Boolean     @default(false)
 }
