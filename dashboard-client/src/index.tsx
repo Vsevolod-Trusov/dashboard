@@ -2,6 +2,9 @@ import { RouterProvider } from 'react-router-dom';
 import ReactDOM from 'react-dom/client';
 import { httpBatchLink, createTRPCProxyClient } from '@trpc/client';
 
+import 'bootstrap-icons/font/bootstrap-icons.css';
+import 'assets/styles/index.module.scss';
+
 import { BACKEND_URL } from 'common';
 import Router from 'router';
 
