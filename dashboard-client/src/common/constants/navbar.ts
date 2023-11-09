@@ -1,6 +1,8 @@
 export enum NAVBAR {
-    LOGO='LOGO',
+    LOGO='etaCar',
     DASHBOARD='Dashboard',
     STAFF='Staff',
-    DEPARTMENTS='Departments'
+    DEPARTMENTS='Departments',
+    SIGN_IN='Sign In',
+    SIGN_UP='Sign Up'
 }
