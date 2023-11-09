@@ -1,4 +1,6 @@
 import { FC } from 'react';
 
-const SignIn: FC = () => <div>Here will sign in page</div>;
+import { Form } from 'components';
+
+const SignIn: FC = () => <Form />;
 export default SignIn;
