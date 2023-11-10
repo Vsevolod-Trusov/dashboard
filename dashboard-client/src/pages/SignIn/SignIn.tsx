@@ -1,6 +1,6 @@
 import { FC } from 'react';
 
-import { Form } from 'components';
+import { SignInForm } from 'components';
 
-const SignIn: FC = () => <Form />;
+const SignIn: FC = () => <SignInForm />;
 export default SignIn;
