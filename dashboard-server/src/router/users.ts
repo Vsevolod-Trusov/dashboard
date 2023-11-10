@@ -53,7 +53,7 @@ export const userRouter = router({
         console.log('CREDENTIALS', credentials)
         const profileResult =  await prisma.profile.create({
             data: {
-                departmentId: dep.id,
+                departmentName: dep.name,
                 credentialsId: credentials.id,
                 companyName: comp.name,
                 ...profile
