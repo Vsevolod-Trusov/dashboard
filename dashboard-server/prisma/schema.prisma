@@ -16,11 +16,11 @@ model Credential {
   lastname String
   password String
   profile  Profile?
+  createdAt   DateTime  @default(now())
 }
 
 model Department {
-  id          String    @id @default(uuid())
-  name        String
+  name        String  @id
   description String
   profiles    Profile[]
   createdAt   DateTime  @default(now())
@@ -38,9 +38,10 @@ model Profile {
   credentialsId String      @unique
   company       Company     @relation(fields: [companyName], references: [name])
   companyName   String
-  department    Department? @relation(fields: [departmentId], references: [id])
-  departmentId  String?
+  department    Department? @relation(fields: [departmentName], references: [name])
+  departmentName  String?    
   email         String      @unique
   role          String
   isHeader      Boolean     @default(false)
+  createdAt   DateTime  @default(now())
 }
