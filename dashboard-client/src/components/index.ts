@@ -1,3 +1,4 @@
 export {Navbar} from './Navbar'
 export {Template} from './Template'
-export {Form} from './Form'
+export {SignInForm} from './SignInForm'
+export {SignUpForm} from './SignUpForm'
