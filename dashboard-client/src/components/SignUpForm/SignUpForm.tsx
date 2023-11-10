@@ -69,11 +69,7 @@ const SignUpForm: FC = () => (
       </div>
       <div className={`${styles['field-wrapper']} ${styles['role']}`}>
         <label htmlFor={styles['field-wrapper__radio']}>Are you manager?</label>
-        <input
-          className={styles['field-wrapper__radio']}
-          type='radio'
-          name='radio'
-        />
+        <input className={styles['field-wrapper__radio']} type='checkbox' />
       </div>
 
       <div className={`${signIn['submit']} ${styles['submit-position']}`}>
