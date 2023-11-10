@@ -6,6 +6,20 @@ import { prisma } from '../prisma';
 import { Prisma } from '@prisma/client';
 
 export const departmentRouter = router({
+
+    getDepartments: procedure.query(async () => (prisma.profile.groupBy({
+        by: ['departmentName'],
+        _count: {
+            departmentName: true,
+        },
+        orderBy: {
+            _count: {
+            departmentName: 'desc',
+            },
+        },
+        take: 5,
+    }))),
+
     getUsersByDepartment: procedure.input(selectionByDepartmentSchema).query(async ({input}) => {
     try {
 
@@ -69,10 +83,10 @@ export const departmentRouter = router({
 
         await prisma.profile.updateMany({
             where: {
-              departmentId: department.id,
+              departmentName: department.name,
             },
             data: {
-              departmentId: undefined,
+              departmentName: undefined,
             },
           });
 
