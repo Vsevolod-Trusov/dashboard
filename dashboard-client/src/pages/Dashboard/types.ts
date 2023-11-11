@@ -1,5 +1,5 @@
-import { DepartmentsAggregate } from '../../../../dashboard-server/src/types';
+import { DepartmentWithProfiles } from '../../../../dashboard-server/src/types';
 
 export interface IDashboard {
-    departments: DepartmentsAggregate 
+    departments: DepartmentWithProfiles[] 
 }
