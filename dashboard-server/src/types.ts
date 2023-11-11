@@ -1,11 +1,17 @@
+// import { Profile } from '@prisma/client'
+
+import { Profile } from '@prisma/client'
 
 export { type Department } from '@prisma/client'
-export { type Profile } from '@prisma/client'
 export { type Company } from '@prisma/client'
 export { type Credential } from '@prisma/client'
-export type DepartmentsAggregate = {
-    departmentName: string | null;
+export type DepartmentAggregate = {
+    departmentName: string | null; 
     _count: {
         departmentName: number;
     };
-}[]
+}
+
+export type UserProfile = Omit<Profile, 'createdAt'> & {createdAt: string}
+
+export type DepartmentWithProfiles = DepartmentAggregate & { profiles: UserProfile[] }
