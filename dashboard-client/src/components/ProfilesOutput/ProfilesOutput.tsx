@@ -13,7 +13,7 @@ const ProfilesOutput = ({ data, ...props }: any) => {
       scrollable
       centered
     >
-      <Modal.Header closeButton>
+      <Modal.Header className={styles['modal-header']} closeButton>
         <Modal.Title id='contained-modal-title-vcenter'>Profiles</Modal.Title>
       </Modal.Header>
       <Modal.Body className={styles['modal-body']}>
