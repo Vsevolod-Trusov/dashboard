@@ -13,6 +13,17 @@ export const userRouter = router({
         throw new TRPCError({message: 'Some server error', code: 'INTERNAL_SERVER_ERROR'});
     }}),
 
+    getStaffCount: procedure.query(async () => {
+        try {
+            const count = await prisma.profile.count()
+            return count
+        }
+        catch(exception) {
+            console.log(exception)
+            return new TRPCError({message: 'Internal server error', code: 'INTERNAL_SERVER_ERROR'})
+        }
+    }),
+
     sigUp: procedure.input(signUpSchema)
     .mutation(async ({input}) => {
         try {
