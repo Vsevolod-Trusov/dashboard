@@ -2,6 +2,7 @@ import { EMPTY_ARRAY } from 'common';
 import { Button, Modal } from 'react-bootstrap';
 
 import { UserProfile } from '../../../../dashboard-server/src/types';
+import styles from './styles';
 
 const ProfilesOutput = ({ data, ...props }: any) => {
   return (
@@ -15,11 +16,13 @@ const ProfilesOutput = ({ data, ...props }: any) => {
       <Modal.Header closeButton>
         <Modal.Title id='contained-modal-title-vcenter'>Profiles</Modal.Title>
       </Modal.Header>
-      <Modal.Body>
-        {(data ?? EMPTY_ARRAY).map((profile: UserProfile) => (
-          <div key={profile.email}>
-            <div>{profile.email}</div>
-            <div>{profile.createdAt}</div>
+      <Modal.Body className={styles['modal-body']}>
+        {(data ?? EMPTY_ARRAY).map((profile: UserProfile, index: any) => (
+          <div className={styles['modal-body__item']} key={profile.email}>
+            <div>
+              {++index}. {profile.email}
+            </div>
+            <div>date: {profile.createdAt}</div>
           </div>
         ))}
       </Modal.Body>
