@@ -6,7 +6,8 @@ export { type Department } from '@prisma/client'
 export { type Company } from '@prisma/client'
 export { type Credential } from '@prisma/client'
 export type DepartmentAggregate = {
-    departmentName: string | null; 
+    departmentName?: string | null; 
+    name?: string | null; 
     _count: {
         departmentName: number;
     };
