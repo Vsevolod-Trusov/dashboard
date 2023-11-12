@@ -57,6 +57,60 @@ export const departmentRouter = router({
         }
     }),
 
+    getDepartmentsCount: procedure.query(async () => {
+        try {
+            const count = await prisma.department.count()
+
+            return count
+        }
+        catch(exception) {
+            console.log(exception)
+            return new TRPCError({message: 'Internal server error', code: 'INTERNAL_SERVER_ERROR'})
+        }
+    }),
+
+    getAllDepartments: procedure.query(async () => {
+       const departments = await prisma.profile.groupBy({
+        by: ['departmentName'],
+        _count: {
+            departmentName: true,
+        },
+        where: {
+            departmentName: {
+                not: null
+            }
+        },
+    })
+
+       const departmentsWithManagers = await Promise.all(departments.map( async department => {
+        const profiles = await prisma.profile.findMany({
+                    where: {
+                        departmentName: department.departmentName,
+                        isHeader: true
+                    }
+                })
+        const createdAt = await prisma.department.findUnique({
+            select: {
+                createdAt: true
+            },
+            where: {
+                name: department.departmentName || ''
+            }
+        })
+                const modifiedProfiles = profiles.map(profile => ({...profile, createdAt: `${profile.createdAt.toLocaleDateString()} ${profile.createdAt.toLocaleTimeString()}`}))
+                
+                return {
+                    ...department,
+                    createdAt,
+                    profiles: modifiedProfiles
+                }
+        } ))
+
+       console.log('TASK 2:',departments)
+       
+       return departmentsWithManagers
+    }),
+
     createDepartment: procedure.input(createDepartmentSchema)
     .mutation(async ({input}) => {
         try {
