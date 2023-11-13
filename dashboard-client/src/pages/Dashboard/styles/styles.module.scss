@@ -27,19 +27,12 @@
     height: 90vh;
 }
 
-.info-panel {
-    display: flex;
-    flex-direction: column;
-    min-width: 100%;
-    row-gap: 5%;
-}
-
-.info-panel-wrapper {
-    margin:  0 10px;
-    background-color: $dashboard-item;
-    border-radius: 10px;
-    border: 1px solid #000;
-    padding: 10px;
+.dashboard-title {
+    margin: 10px;
+    border-bottom: 2px solid #000;
+    &__item {
+        text-align: center;
+    }
 }
 
 .dashboard-wrapper {
@@ -47,14 +40,6 @@
     flex-direction: column;
     row-gap: 5%;
     min-width: 100%;
-}
-
-.dashboard-title {
-    margin: 10px;
-    border-bottom: 2px solid #000;
-    &__item {
-        text-align: center;
-    }
 }
 
 .dashboard {
@@ -97,10 +82,5 @@
     }
 }
 
-.statistics-content {
-    display: flex;
-    min-width: 100%;
-    justify-content: space-between;
-}
 
 

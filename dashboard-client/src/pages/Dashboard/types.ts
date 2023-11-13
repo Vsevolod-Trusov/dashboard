@@ -1,6 +1,6 @@
 import { DepartmentWithProfiles } from '../../../../dashboard-server/src/types';
 
-interface IStatistics {
+export interface IStatistics {
     departmentsCount: number,
     staffCount: number,
     companiesCount: number
@@ -8,5 +8,4 @@ interface IStatistics {
 
 export interface IDashboard {
     departments: DepartmentWithProfiles[] 
-    statistics: IStatistics 
 }
