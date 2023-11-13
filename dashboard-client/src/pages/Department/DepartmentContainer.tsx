@@ -1,10 +1,10 @@
 import { FC, useEffect, useState } from 'react';
 
+import { client } from 'index';
 import { EMPTY_ARRAY } from 'common';
 
-import Department from './Department';
-import { client } from 'index';
 import { DepartmentWithProfiles } from '../../../../dashboard-server/src/types';
+import Department from './Department';
 
 const DepartmentContainer: FC = () => {
   const [departments, setDepartments] =
