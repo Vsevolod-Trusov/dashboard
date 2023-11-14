@@ -4,6 +4,8 @@ export enum ROUTES {
   STAFF = '/staff',
   SIGN_IN = '/sign-in',
   SIGN_UP = '/sign-up',
+  CREATE_STAFF = '/staff-form',
+  CREATE_DEPARTMENT = '/department-form',
 }
 
 export const BASE_NAME = '/';
