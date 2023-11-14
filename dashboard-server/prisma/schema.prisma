@@ -11,37 +11,42 @@ datasource db {
 }
 
 model Credential {
-  id       String   @id @default(uuid())
-  name     String
-  lastname String
-  password String
-  profile  Profile?
-  createdAt   DateTime  @default(now())
+  id        String   @id @default(uuid())
+  name      String
+  lastname  String
+  password  String
+  profile   Profile?
+  createdAt DateTime @default(now())
 }
 
 model Department {
-  name        String  @id
+  id          String    @id @default(uuid())
+  name        String
   description String
   profiles    Profile[]
   createdAt   DateTime  @default(now())
+  company     Company   @relation(fields: [companyId], references: [id])
+  companyId   String
 }
 
 model Company {
-  name      String    @unique
-  createdAt DateTime  @default(now())
-  profiles  Profile[]
+  id         String       @id @default(uuid())
+  name       String
+  createdAt  DateTime     @default(now())
+  profiles   Profile[]
+  departments Department[]
 }
 
 model Profile {
   id            String      @id @default(uuid())
   credentials   Credential  @relation(fields: [credentialsId], references: [id], onDelete: Cascade)
   credentialsId String      @unique
-  company       Company     @relation(fields: [companyName], references: [name])
-  companyName   String
-  department    Department? @relation(fields: [departmentName], references: [name])
-  departmentName  String?    
+  company       Company     @relation(fields: [companyId], references: [id])
+  companyId     String
+  department    Department? @relation(fields: [departmentId], references: [id])
+  departmentId  String?
   email         String      @unique
   role          String
   isHeader      Boolean     @default(false)
-  createdAt   DateTime  @default(now())
+  createdAt     DateTime    @default(now())
 }
