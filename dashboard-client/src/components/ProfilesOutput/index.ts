@@ -1,1 +1,1 @@
-export {default as ProfilesOutput} from './ProfilesOutput'
+export { default as ProfilesOutput } from './ProfilesOutput';

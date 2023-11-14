@@ -1,1 +1,1 @@
-export {default as DepartmentForm} from './DepartmentForm'
+export { default as DepartmentForm } from './DepartmentForm';

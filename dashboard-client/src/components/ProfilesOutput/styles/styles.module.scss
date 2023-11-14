@@ -1,26 +1,25 @@
-@import "assets/styles/_variables.module.scss";
-
+@import 'assets/styles/_variables.module.scss';
 
 .modal-header {
-    padding: 5px 10px;
+  padding: 5px 10px;
 }
 
 .modal-body {
-    display: flex;
-    flex-direction: column;
-    min-width: 100%;
-    row-gap: 10px;
-    padding: 5px 10px;
+  display: flex;
+  flex-direction: column;
+  min-width: 100%;
+  row-gap: 10px;
+  padding: 5px 10px;
 
-    &__item {
-        display: flex;
-        max-width: 100%;
-        padding: 10px;
-        justify-content: space-between;
-        border-radius: 10px;
-        &:hover {
-            background-color: $dashboard-item;
-            transition: .3s;
-        }
+  &__item {
+    display: flex;
+    max-width: 100%;
+    padding: 10px;
+    justify-content: space-between;
+    border-radius: 10px;
+    &:hover {
+      background-color: $dashboard-item;
+      transition: 0.3s;
     }
+  }
 }

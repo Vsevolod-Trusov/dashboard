@@ -1,1 +1,1 @@
-export {default} from './DepartmentContainer'
+export { default } from './DepartmentContainer';

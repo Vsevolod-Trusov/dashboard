@@ -1,1 +1,1 @@
-export const ADD_STFF = 'Add staff'
+export const ADD_STFF = 'Add staff';

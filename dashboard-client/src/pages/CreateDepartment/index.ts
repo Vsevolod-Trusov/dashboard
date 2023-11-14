@@ -1,1 +1,1 @@
-export {default} from './CreateDepartmentContainer'
+export { default } from './CreateDepartmentContainer';

@@ -1,1 +1,1 @@
-export {default as ManagerOutput} from './ManagerOutput'
+export { default as ManagerOutput } from './ManagerOutput';

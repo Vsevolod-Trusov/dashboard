@@ -1,6 +1,4 @@
 import { FC } from 'react';
 
-import { SignUpForm } from 'components';
-
-const SignUp: FC = () => <SignUpForm />;
+const SignUp: FC = () => <div></div>;
 export default SignUp;

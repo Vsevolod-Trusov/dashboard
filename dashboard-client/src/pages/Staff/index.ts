@@ -1,1 +1,1 @@
-export {default} from './StaffContainer'
+export { default } from './StaffContainer';
