@@ -8,7 +8,16 @@ import { prisma } from '../prisma';
 export const userRouter = router({
     getUsers: procedure.query(async () => {
     try {
-        return await prisma.profile.findMany();
+        const profiles = await prisma.profile.findMany({
+            include: {
+                company: true,
+                department: true
+            }
+        });
+
+        const modifiedProfiles = profiles.map(profile => ({...profile, createdAt: `${profile.createdAt.toLocaleDateString()} ${profile.createdAt.toLocaleTimeString()}`}))
+
+        return modifiedProfiles 
     } catch (e) {
         throw new TRPCError({message: 'Some server error', code: 'INTERNAL_SERVER_ERROR'});
     }}),
@@ -27,11 +36,11 @@ export const userRouter = router({
     sigUp: procedure.input(signUpSchema)
     .mutation(async ({input}) => {
         try {
-            const {name, lastname, password, department, companyName, ...profile} = input
+            const {name, lastname, password, departmentName, companyName, ...profile} = input
         
         const dep = await prisma.department.findFirst({
             where: {
-                name: department
+                name: departmentName
             }
         })
 
@@ -39,19 +48,15 @@ export const userRouter = router({
             throw new TRPCError({message: 'No such department', code: 'BAD_REQUEST'})
         }
 
-        console.log('DEP', dep)
-
-        const comp = await prisma.company.findUnique({
+        const comp = await prisma.company.findFirst({
             where: {
-                name: companyName
+                id: companyName
             }
         })
 
         if (!comp) {
             throw new TRPCError({message: 'No such company', code: 'BAD_REQUEST'})
         }
-
-        console.log('COMP', comp)
 
         const credentials =  await prisma.credential.create({
         data: {
@@ -61,22 +66,17 @@ export const userRouter = router({
         }
         })
 
-        console.log('CREDENTIALS', credentials)
         const profileResult =  await prisma.profile.create({
             data: {
-                departmentName: dep.name,
+                departmentId: dep.id,
                 credentialsId: credentials.id,
-                companyName: comp.name,
+                companyId: comp.id,
                 ...profile
             },
         })
 
-        console.log(profileResult)
+        return profileResult
 
-        return {
-            ...credentials,
-            ...profileResult
-        }
         }catch(exception) {
             if (exception instanceof Prisma.PrismaClientKnownRequestError) {
                 if (exception.code === 'P2002') {

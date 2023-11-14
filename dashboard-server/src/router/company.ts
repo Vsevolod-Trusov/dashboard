@@ -14,4 +14,14 @@ export const companyRouter = router({
             return new TRPCError({message: 'Internal server error', code: 'INTERNAL_SERVER_ERROR'})
         }
     }),
+
+    getCompanyNames: procedure.query(async () => {
+            const companyNames = await prisma.company.findMany({
+                select: {
+                    id: true,
+                    name: true
+                }
+            })
+            return companyNames
+    }),
 });
