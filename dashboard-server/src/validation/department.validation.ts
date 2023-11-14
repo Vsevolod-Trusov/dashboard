@@ -6,6 +6,7 @@ export const selectionByDepartmentSchema = z.object({
 
 export const createDepartmentSchema = z.object({
     name: z.string(),
+    companyId: z.string(),
     description: z.string()
 })
 

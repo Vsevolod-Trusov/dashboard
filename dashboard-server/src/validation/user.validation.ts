@@ -5,7 +5,7 @@ export const signUpSchema =  z.object({
     lastname: z.string(),
     password: z.string(),
     companyName: z.string(),
-    department: z.string(),
+    departmentName: z.string(),
     email: z.string().email(),
     role: z.enum(['manager', 'user']),
     isHeader: z.boolean()
