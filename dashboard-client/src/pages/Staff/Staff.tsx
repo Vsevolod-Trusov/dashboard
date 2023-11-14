@@ -2,7 +2,7 @@ import { FC } from 'react';
 import { Table } from 'react-bootstrap';
 
 import { Statistics, styles as dashboardStyles } from 'pages/Dashboard';
-import { DEPARTMENTS_TITLE, InfoPanel } from 'pages/Dashboard/components';
+import { InfoPanel, STAFF_TITLE } from 'pages/Dashboard/components';
 import styles from './styles';
 
 import { IStaff } from './types';
@@ -14,7 +14,7 @@ const Staff: FC<IStaff> = ({ staff }) => (
       <div className={dashboardStyles['dashboard-wrapper']}>
         <div className={dashboardStyles['dashboard-title']}>
           <h2 className={dashboardStyles['dashboard-title__item']}>
-            {DEPARTMENTS_TITLE}
+            {STAFF_TITLE}
           </h2>
         </div>
         <div className={styles['table-wrapper']}>
@@ -24,14 +24,16 @@ const Staff: FC<IStaff> = ({ staff }) => (
                 <th>#</th>
                 <th>email</th>
                 <th>company</th>
+                <th>createdAt</th>
               </tr>
             </thead>
             <tbody>
-              {staff.map(({ email, companyName }, index) => (
+              {staff.map(({ email, company, createdAt }, index) => (
                 <tr key={email}>
                   <td>{++index}</td>
                   <td>{email}</td>
-                  <td>{companyName}</td>
+                  <td>{company?.name}</td>
+                  <td>{createdAt}</td>
                 </tr>
               ))}
             </tbody>

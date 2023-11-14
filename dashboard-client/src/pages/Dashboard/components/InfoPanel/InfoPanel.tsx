@@ -6,8 +6,8 @@ import { IDashboard } from 'pages/Dashboard/types';
 import styles from './styles';
 import {
   ALL_DEPARTMENTS_TITLE,
+  CHART_TITLE,
   DEPARTMENTS_TITLE,
-  STAFF_TITLE,
 } from './constants';
 import dashboardStyles from '../../styles';
 import { StatisticsContext } from 'context';
@@ -42,7 +42,7 @@ const InfoPanel: FC<
         datasets: [
           {
             label: 'Staff',
-            data: departments?.map(({ _count }) => _count.departmentName),
+            data: departments?.map(({ _count }) => _count.departmentId),
             backgroundColor: [
               'rgb(255, 99, 132)',
               'rgb(54, 162, 235)',
@@ -69,7 +69,7 @@ const InfoPanel: FC<
           {forDepartments
             ? ALL_DEPARTMENTS_TITLE
             : forStaff
-            ? STAFF_TITLE
+            ? CHART_TITLE
             : DEPARTMENTS_TITLE}
         </h2>
       </div>

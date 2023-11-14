@@ -44,7 +44,7 @@ const Dashboard: FC<IDashboard> = ({ departments }) => {
                     {DEPARTMENT_LABEL} {departmentName}
                   </div>
                   <div className={styles['dashboard-item__staff']}>
-                    {STAFF_LABEL} {_count.departmentName}
+                    {STAFF_LABEL} {_count.departmentId}
                   </div>
                   <div className={styles['dashboard-item__open-profiles']}>
                     <Button
