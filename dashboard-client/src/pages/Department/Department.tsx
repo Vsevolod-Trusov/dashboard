@@ -1,8 +1,6 @@
 import { FC, useState } from 'react';
 import { Button } from 'react-bootstrap';
 
-import { EMPTY_ARRAY } from 'common';
-import { ProfilesOutput } from 'components';
 import {
   DEPARTMENT_LABEL,
   InfoPanel,
@@ -15,10 +13,11 @@ import { DEPARTMENTS_TITLE, SHOW_OPEN_MODAL_BUTTON_TITLE } from './constants';
 import { UserProfile } from '../../../../dashboard-server/src/types';
 import { IDepartment } from './types';
 import styles from './styles';
+import { ManagerOutput } from 'components/ManagerOutput';
 
 const Department: FC<IDepartment> = ({ departments }) => {
   const [modalShow, setModalShow] = useState(false);
-  const [profiles, setProfiles] = useState<UserProfile[]>(EMPTY_ARRAY);
+  const [profile, setProfiles] = useState<UserProfile>();
 
   return (
     <div className={dashboardStyles['template-wrapper']}>
@@ -38,7 +37,7 @@ const Department: FC<IDepartment> = ({ departments }) => {
                     {DEPARTMENT_LABEL} {departmentName}
                   </div>
                   <div className={styles['departments-item__staff']}>
-                    {STAFF_LABEL} {_count.departmentName}
+                    {STAFF_LABEL} {_count.departmentId}
                   </div>
                   <div className={styles['departments-item__staff']}>
                     {createdAt}
@@ -48,7 +47,9 @@ const Department: FC<IDepartment> = ({ departments }) => {
                       variant='primary'
                       size='sm'
                       onClick={() => {
-                        setProfiles(profiles);
+                        const [profile] = profiles;
+                        console.log('P', profile);
+                        setProfiles(profile);
                         setModalShow(true);
                       }}
                     >
@@ -59,9 +60,8 @@ const Department: FC<IDepartment> = ({ departments }) => {
               ),
             )}
           </div>
-          <ProfilesOutput
-            data={profiles}
-            forManager
+          <ManagerOutput
+            profile={profile}
             show={modalShow}
             onHide={() => setModalShow(false)}
           />
