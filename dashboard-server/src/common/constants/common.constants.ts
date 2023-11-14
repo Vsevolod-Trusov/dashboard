@@ -1,1 +1,1 @@
-export const STARTED_APP = 'Started'
+export const STARTED_APP = 'Started';

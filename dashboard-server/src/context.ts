@@ -1,14 +1,14 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { inferAsyncReturnType } from '@trpc/server'
-import * as trpcExpress from '@trpc/server/adapters/express'
+import { inferAsyncReturnType } from '@trpc/server';
+import * as trpcExpress from '@trpc/server/adapters/express';
 
 const createContext = ({
   req,
   res,
 }: trpcExpress.CreateExpressContextOptions) => {
-  return {}
-}
+  return {};
+};
 
-export type Context = inferAsyncReturnType<typeof createContext>
+export type Context = inferAsyncReturnType<typeof createContext>;
 
-export default createContext
+export default createContext;

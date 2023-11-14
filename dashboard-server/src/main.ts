@@ -13,10 +13,13 @@ const appRouter = router;
 
 app.use(cors({ origin: true }));
 
-app.use(ROUTES.TRPC, createExpressMiddleware({ 
-  router: appRouter,
-  createContext,
-}));
+app.use(
+  ROUTES.TRPC,
+  createExpressMiddleware({
+    router: appRouter,
+    createContext,
+  }),
+);
 
 app.listen(port, () => {
   console.log(STARTED_APP, port);
