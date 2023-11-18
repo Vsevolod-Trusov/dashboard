@@ -1,33 +1,27 @@
-import { STATISTICS_INIT } from 'common';
-import { client } from 'index';
-import { IStatistics } from 'pages/Dashboard';
 import { FC, useEffect, useState } from 'react';
-import Template from './Template';
 
+import { IStatistics } from 'pages/Dashboard';
 import { StatisticsContext } from 'context';
+import { STATISTICS_INIT } from 'common';
+import { trpc } from 'index';
+
+import Template from './Template';
 
 const TemplateContainer: FC = () => {
   const [statistics, setStatistics] = useState<IStatistics>(STATISTICS_INIT);
 
+  const { data: departmentsCount } =
+    trpc.departments.getDepartmentsCount.useQuery();
+  const { data: staffCount } = trpc.users.getStaffCount.useQuery();
+  const { data: companiesCount } = trpc.companies.getCompaniesCount.useQuery();
+
   useEffect(() => {
-    (async function () {
-      let departmentsCount =
-        await client.departments.getDepartmentsCount.query();
-      departmentsCount = departmentsCount as number;
-
-      let staffCount = await client.users.getStaffCount.query();
-      staffCount = staffCount as number;
-
-      let companiesCount = await client.companies.getCompaniesCount.query();
-      companiesCount = companiesCount as number;
-
-      setStatistics({
-        departmentsCount,
-        staffCount,
-        companiesCount,
-      });
-    })();
-  }, []);
+    setStatistics({
+      departmentsCount: departmentsCount as number,
+      staffCount: staffCount as number,
+      companiesCount: companiesCount as number,
+    });
+  }, [departmentsCount, staffCount, companiesCount]);
 
   return (
     <StatisticsContext.Provider value={statistics}>
