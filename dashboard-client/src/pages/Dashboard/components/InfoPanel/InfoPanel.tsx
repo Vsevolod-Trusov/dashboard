@@ -40,7 +40,7 @@ const InfoPanel: FC<
     : {
         labels: (departments ?? EMPTY_ARRAY).map(
           (department) =>
-            department.names.company.name + `(${department.names.name})`,
+            department?.names?.company.name + `(${department?.names?.name})`,
         ),
         datasets: [
           {

@@ -8,6 +8,7 @@ import { IDashboard } from './types';
 import styles from './styles';
 import { InfoPanel, Statistics } from './components';
 import {
+  COMPANY_LABEL,
   DASHBOARD_TITLE,
   DEPARTMENT_LABEL,
   OPEN_MODAL_BUTTON_LABEL,
@@ -34,13 +35,13 @@ const Dashboard: FC<IDashboard> = ({ departments }) => {
           </div>
           <div className={styles['dashboard']}>
             {departments.map(
-              (
-                { departmentName, _count, profiles }: DepartmentWithProfiles,
-                index,
-              ) => (
+              ({ _count, profiles, names }: DepartmentWithProfiles, index) => (
                 <div className={styles['dashboard-item']} key={index}>
                   <div className={styles['dashboard-item__department']}>
-                    {DEPARTMENT_LABEL} {departmentName}
+                    {COMPANY_LABEL} {names?.company.name}
+                  </div>
+                  <div className={styles['dashboard-item__department']}>
+                    {DEPARTMENT_LABEL} {names?.name}
                   </div>
                   <div className={styles['dashboard-item__staff']}>
                     {STAFF_LABEL} {_count.departmentId}
