@@ -1,20 +1,20 @@
 import { FC, useEffect, useState } from 'react';
 
 import { EMPTY_ARRAY } from 'common';
+import { trpc } from 'index';
 
 import Staff from './Staff';
-import { client } from 'index';
 import { UserProfile } from '../../../../dashboard-server/src/types';
 
 const StaffContainer: FC = () => {
   const [staff, setStaff] = useState<UserProfile[]>(EMPTY_ARRAY);
 
+  const { data: staffData } = trpc.users.getUsers.useQuery();
   useEffect(() => {
     (async function () {
-      const staff = await client.users.getUsers.query();
-      setStaff(staff);
+      setStaff(staffData ?? EMPTY_ARRAY);
     })();
-  }, []);
+  }, [staffData]);
 
   return <Staff staff={staff} />;
 };
