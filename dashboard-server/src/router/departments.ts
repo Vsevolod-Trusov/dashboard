@@ -1,14 +1,16 @@
 import { TRPCError } from '@trpc/server';
 import { z } from 'zod';
 
-import { createDepartmentSchema, removeDepartmentSchema } from '../validation';
-import { DepartmentWithProfiles } from '../types';
-import { procedure, router } from '../trpc';
+import { EMPTY_STRING, TOP_NOTES } from '../common';
 import { prisma } from '../prisma';
+import { procedure, router } from '../trpc';
+import { DepartmentsWithCount } from '../types';
+import { getDate } from '../utils';
+import { createDepartmentSchema, removeDepartmentSchema } from '../validation';
 
 export const departmentRouter = router({
   getDepartments: procedure.query(
-    async (): Promise<DepartmentWithProfiles[] | TRPCError> => {
+    async (): Promise<DepartmentsWithCount[] | TRPCError> => {
       try {
         const departments = await prisma.profile.groupBy({
           by: ['departmentId'],
@@ -25,14 +27,21 @@ export const departmentRouter = router({
               not: null,
             },
           },
-          take: 5,
+          take: TOP_NOTES,
         });
 
+        const modifiedProfiles = departments.map(
+          ({ departmentId, _count }) => ({
+            id: departmentId,
+            count: _count.departmentId,
+          }),
+        );
+
         const departmentsWithProfiles = await Promise.all(
-          departments.map(async department => {
+          modifiedProfiles.map(async department => {
             const profiles = await prisma.profile.findMany({
               where: {
-                departmentId: department.departmentId,
+                departmentId: department.id,
               },
               orderBy: {
                 createdAt: 'desc',
@@ -40,8 +49,9 @@ export const departmentRouter = router({
               include: {
                 credentials: true,
               },
-              take: 5,
+              take: TOP_NOTES,
             });
+
             const departmentNameAndCompanyName =
               await prisma.department.findUnique({
                 select: {
@@ -53,7 +63,7 @@ export const departmentRouter = router({
                   },
                 },
                 where: {
-                  id: department.departmentId || '',
+                  id: department.id || EMPTY_STRING,
                 },
               });
 
@@ -65,12 +75,13 @@ export const departmentRouter = router({
             return {
               ...department,
               profiles: modifiedProfiles,
-              names: departmentNameAndCompanyName,
+              name: departmentNameAndCompanyName?.name,
+              companyName: departmentNameAndCompanyName?.company.name,
             };
           }),
         );
 
-        return departmentsWithProfiles as unknown as DepartmentWithProfiles[];
+        return departmentsWithProfiles as DepartmentsWithCount[];
       } catch (exception) {
         return new TRPCError({
           message: 'Internal server error',
@@ -94,77 +105,52 @@ export const departmentRouter = router({
   }),
 
   getAllDepartments: procedure.query(async () => {
-    const departments = await prisma.profile.groupBy({
-      by: ['departmentId'],
-      _count: {
-        departmentId: true,
-      },
-      where: {
-        departmentId: {
-          not: null,
+    const departments = await prisma.department.findMany({
+      select: {
+        id: true,
+        name: true,
+        company: {
+          select: {
+            name: true,
+          },
         },
+        createdAt: true,
+        profiles: true,
       },
     });
 
-    const departmentsWithManagers = await Promise.all(
-      departments.map(async department => {
-        const profiles = await prisma.profile.findMany({
-          select: {
-            credentials: {
-              select: {
-                name: true,
-                lastname: true,
-              },
-            },
-            email: true,
-            company: {
-              select: {
-                name: true,
-              },
-            },
-            department: {
-              select: { name: true },
-            },
-            createdAt: true,
-          },
-          where: {
-            departmentId: department.departmentId,
-            isHeader: true,
-          },
-        });
-
-        const departmentInfo = await prisma.department.findUnique({
-          select: {
-            name: true,
-            company: {
-              select: {
-                name: true,
-              },
-            },
-            createdAt: true,
-          },
-          where: {
-            id: department.departmentId || '',
-          },
-        });
-        const modifiedProfiles = profiles.map(profile => ({
+    const updatedDepartments = departments.map(
+      ({ company, ...department }) => ({
+        ...department,
+        companyName: company.name,
+        createdAt: getDate(department.createdAt),
+        profiles: department.profiles.map(profile => ({
           ...profile,
-          createdAt: `${profile.createdAt.toLocaleDateString()} ${profile.createdAt.toLocaleTimeString()}`,
-        }));
+          createdAt: getDate(profile.createdAt),
+        })),
+      }),
+    );
 
-        const createdAtField =
-          departmentInfo &&
-          `${departmentInfo.createdAt?.toLocaleDateString()} ${departmentInfo?.createdAt?.toLocaleTimeString()}`;
+    const departmentsWithManagers = await Promise.all(
+      (updatedDepartments as DepartmentsWithCount[]).map(async department => {
+        const staffCount = await prisma.profile.groupBy({
+          by: ['departmentId'],
+          _count: {
+            departmentId: true,
+          },
+          where: {
+            departmentId: department.id,
+          },
+        });
+
+        const count = staffCount.find(
+          item => item.departmentId === department.id,
+        );
 
         return {
           ...department,
-          departmentName: departmentInfo?.name,
-          createdAt: createdAtField,
-          profiles: modifiedProfiles,
-          names: {
-            name: departmentInfo?.name,
-            company: departmentInfo?.company,
-          },
+          count: count?._count.departmentId,
+          profiles: department.profiles,
         };
       }),
     );
@@ -197,7 +183,6 @@ export const departmentRouter = router({
             description,
           },
         });
-
         return created;
       } catch (exception) {
         throw new TRPCError({
@@ -208,7 +193,6 @@ export const departmentRouter = router({
     }),
 
   getDepartmentsNames: procedure.input(z.string()).query(async ({ input }) => {
-    console.log(input);
     const departmentsNames = await prisma.department.findMany({
       select: {
         name: true,
@@ -218,7 +202,6 @@ export const departmentRouter = router({
       },
     });
 
-    console.log(departmentsNames[0]);
     return departmentsNames.map(department => department.name);
   }),
 

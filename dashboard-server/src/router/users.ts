@@ -1,4 +1,3 @@
-import { Prisma } from '@prisma/client';
 import { TRPCError } from '@trpc/server';
 
 import { procedure, router } from '../trpc';
@@ -34,7 +33,6 @@ export const userRouter = router({
       const count = await prisma.profile.count();
       return count;
     } catch (exception) {
-      console.log(exception);
       return new TRPCError({
         message: 'Internal server error',
         code: 'INTERNAL_SERVER_ERROR',
@@ -98,13 +96,6 @@ export const userRouter = router({
 
       return profileResult;
     } catch (exception) {
-      if (exception instanceof Prisma.PrismaClientKnownRequestError) {
-        if (exception.code === 'P2002') {
-          console.log(
-            'There is a unique constraint violation, a new user cannot be created with this email',
-          );
-        }
-      }
       throw new TRPCError({
         message: 'Such email already exists',
         code: 'BAD_REQUEST',
