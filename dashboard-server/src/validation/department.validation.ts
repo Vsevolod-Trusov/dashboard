@@ -11,5 +11,5 @@ export const createDepartmentSchema = z.object({
 });
 
 export const removeDepartmentSchema = z.object({
-  name: z.string(),
+  id: z.string(),
 });
