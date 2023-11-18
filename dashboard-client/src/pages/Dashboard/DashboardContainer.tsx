@@ -1,6 +1,6 @@
 import { FC, useEffect, useState } from 'react';
 
-import { client } from 'index';
+import { trpc } from 'index';
 import { EMPTY_ARRAY } from 'common';
 
 import Dashboard from './Dashboard';
@@ -9,14 +9,14 @@ import { DepartmentWithProfiles } from '../../../../dashboard-server/src/types';
 const DashboardContainer: FC = () => {
   const [departments, setDepartments] =
     useState<DepartmentWithProfiles[]>(EMPTY_ARRAY);
+  const { data: dashBoardData } = trpc.departments.getDepartments.useQuery();
 
   useEffect(() => {
     (async () => {
-      const data = await client.departments.getDepartments.query();
-      setDepartments(data as DepartmentWithProfiles[]);
+      setDepartments(dashBoardData as DepartmentWithProfiles[]);
     })();
-  }, []);
+  }, [dashBoardData]);
 
-  return <Dashboard departments={departments} />;
+  return <Dashboard departments={departments ?? EMPTY_ARRAY} />;
 };
 export default DashboardContainer;

@@ -13,7 +13,6 @@ import {
   OPEN_MODAL_BUTTON_LABEL,
   STAFF_LABEL,
 } from './constants';
-
 import {
   DepartmentWithProfiles,
   UserProfile,

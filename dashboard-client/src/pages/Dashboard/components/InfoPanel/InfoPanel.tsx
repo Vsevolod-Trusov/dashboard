@@ -2,15 +2,16 @@ import { FC, useContext } from 'react';
 import { Doughnut } from 'react-chartjs-2';
 
 import { IDashboard } from 'pages/Dashboard/types';
+import { StatisticsContext } from 'context';
+import { EMPTY_ARRAY } from 'common';
 
-import styles from './styles';
 import {
   ALL_DEPARTMENTS_TITLE,
   CHART_TITLE,
   DEPARTMENTS_TITLE,
 } from './constants';
+import styles from './styles';
 import dashboardStyles from '../../styles';
-import { StatisticsContext } from 'context';
 
 const InfoPanel: FC<
   Partial<Pick<IDashboard, 'departments'>> & { forDepartments?: boolean } & {
@@ -18,7 +19,6 @@ const InfoPanel: FC<
   }
 > = ({ departments, forDepartments, forStaff }) => {
   const staffData = useContext(StatisticsContext);
-
   const data = forStaff
     ? {
         labels: Object.keys(staffData),
@@ -38,7 +38,10 @@ const InfoPanel: FC<
         ],
       }
     : {
-        labels: departments?.map(({ departmentName }) => departmentName),
+        labels: (departments ?? EMPTY_ARRAY).map(
+          (department) =>
+            department.names.company.name + `(${department.names.name})`,
+        ),
         datasets: [
           {
             label: 'Staff',
