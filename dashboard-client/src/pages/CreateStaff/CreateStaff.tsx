@@ -1,7 +1,7 @@
 import { FC } from 'react';
 
 import { styles as dashboardStyles } from 'pages/Dashboard';
-import { IStaffValues } from 'components/SignUpForm/types';
+import { IStaffValues } from 'components/SignUpForm';
 import { SignUpForm } from 'components';
 
 import { ADD_STFF } from './constants';
