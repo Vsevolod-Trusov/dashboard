@@ -1,16 +1,12 @@
-import { RouterProvider } from 'react-router-dom';
 import ReactDOM from 'react-dom/client';
-import { httpBatchLink, createTRPCProxyClient } from '@trpc/client';
+import { createTRPCReact } from '@trpc/react-query';
 
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import 'assets/styles/index.module.scss';
+import App from 'App';
 
-import { BACKEND_URL } from 'common';
-import Router from 'router';
-
-import type { AppRouter } from '../../dashboard-server/src/main';
-
+import { AppRouter } from '../../dashboard-server/src/main';
 import {
   ArcElement,
   BarElement,
@@ -34,12 +30,6 @@ const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement,
 );
 
-export const client = createTRPCProxyClient<AppRouter>({
-  links: [
-    httpBatchLink({
-      url: BACKEND_URL,
-    }),
-  ],
-});
+export const trpc = createTRPCReact<AppRouter>();
 
-root.render(<RouterProvider router={Router} />);
+root.render(<App />);
