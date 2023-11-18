@@ -24,10 +24,8 @@ const Component = () => {
       <trpc.Provider client={trpcClient} queryClient={queryClient}>
         <QueryClientProvider client={queryClient}>
           <RouterProvider router={Router} />
-          );
         </QueryClientProvider>
       </trpc.Provider>
-      ,
     </>
   );
 };
