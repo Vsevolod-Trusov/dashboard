@@ -38,7 +38,7 @@ const Dashboard: FC<IDashboard> = ({ departments }) => {
               ({ _count, profiles, names }: DepartmentWithProfiles, index) => (
                 <div className={styles['dashboard-item']} key={index}>
                   <div className={styles['dashboard-item__department']}>
-                    {COMPANY_LABEL} {names?.company.name}
+                    {COMPANY_LABEL} {names?.company?.name}
                   </div>
                   <div className={styles['dashboard-item__department']}>
                     {DEPARTMENT_LABEL} {names?.name}
