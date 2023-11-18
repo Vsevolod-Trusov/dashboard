@@ -8,12 +8,12 @@ import {
   Statistics,
   styles as dashboardStyles,
 } from 'pages/Dashboard';
+import { ManagerOutput } from 'components';
 
 import { DEPARTMENTS_TITLE, SHOW_OPEN_MODAL_BUTTON_TITLE } from './constants';
 import { UserProfile } from '../../../../dashboard-server/src/types';
 import { IDepartment } from './types';
 import styles from './styles';
-import { ManagerOutput } from 'components/ManagerOutput';
 
 const Department: FC<IDepartment> = ({ departments }) => {
   const [modalShow, setModalShow] = useState(false);
@@ -48,7 +48,6 @@ const Department: FC<IDepartment> = ({ departments }) => {
                       size='sm'
                       onClick={() => {
                         const [profile] = profiles;
-                        console.log('P', profile);
                         setProfiles(profile);
                         setModalShow(true);
                       }}
