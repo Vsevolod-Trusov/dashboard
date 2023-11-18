@@ -1,4 +1,4 @@
-import Prisma from '@prisma/client';
+import Prisma, { Company } from '@prisma/client';
 
 export { type Company } from '@prisma/client';
 export type DepartmentAggregate = {
@@ -15,10 +15,16 @@ export type UserProfile = Omit<Partial<Prisma.Profile>, 'createdAt'> & {
   company?: Partial<Omit<Prisma.Company, 'createdAt'>>;
 };
 
+type NameWithCompany = {
+  company?: Pick<Company, 'name'>;
+  name?: string;
+};
+
 export type DepartmentWithProfiles = DepartmentAggregate & {
   profiles: UserProfile[];
 } & { createdAt?: string | undefined | null } & {
   departmentName?: string | undefined;
+  names?: NameWithCompany;
 };
 
 export type CompanyType = {
