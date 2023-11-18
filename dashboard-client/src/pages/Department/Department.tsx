@@ -30,34 +30,32 @@ const Department: FC<IDepartment> = ({ departments }) => {
             </h2>
           </div>
           <div className={styles['departments']}>
-            {departments.map(
-              ({ departmentName, _count, profiles, createdAt }, index) => (
-                <div className={styles['departments-item']} key={index}>
-                  <div className={styles['departments-item__department-value']}>
-                    {DEPARTMENT_LABEL} {departmentName}
-                  </div>
-                  <div className={styles['departments-item__staff']}>
-                    {STAFF_LABEL} {_count.departmentId}
-                  </div>
-                  <div className={styles['departments-item__staff']}>
-                    {createdAt}
-                  </div>
-                  <div className={styles['departments-item__open-manager']}>
-                    <Button
-                      variant='primary'
-                      size='sm'
-                      onClick={() => {
-                        const [profile] = profiles;
-                        setProfiles(profile);
-                        setModalShow(true);
-                      }}
-                    >
-                      {SHOW_OPEN_MODAL_BUTTON_TITLE}
-                    </Button>
-                  </div>
+            {departments.map(({ name, count, profiles, createdAt }, index) => (
+              <div className={styles['departments-item']} key={index}>
+                <div className={styles['departments-item__department-value']}>
+                  {DEPARTMENT_LABEL} {name}
                 </div>
-              ),
-            )}
+                <div className={styles['departments-item__staff']}>
+                  {STAFF_LABEL} {count}
+                </div>
+                <div className={styles['departments-item__staff']}>
+                  {createdAt}
+                </div>
+                <div className={styles['departments-item__open-manager']}>
+                  <Button
+                    variant='primary'
+                    size='sm'
+                    onClick={() => {
+                      const [profile] = new Array(profiles);
+                      setProfiles(profile as unknown as UserProfile);
+                      setModalShow(true);
+                    }}
+                  >
+                    {SHOW_OPEN_MODAL_BUTTON_TITLE}
+                  </Button>
+                </div>
+              </div>
+            ))}
           </div>
           <ManagerOutput
             profile={profile}

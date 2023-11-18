@@ -1,4 +1,4 @@
-import { DepartmentWithProfiles } from '../../../../dashboard-server/src/types';
+import { DepartmentsWithCount } from '../../../../dashboard-server/src/types';
 
 export interface IStatistics {
   departmentsCount: number;
@@ -7,5 +7,5 @@ export interface IStatistics {
 }
 
 export interface IDashboard {
-  departments: DepartmentWithProfiles[];
+  departments: DepartmentsWithCount[];
 }

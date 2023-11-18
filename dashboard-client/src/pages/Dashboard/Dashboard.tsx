@@ -16,6 +16,7 @@ import {
 } from './constants';
 import {
   DepartmentWithProfiles,
+  DepartmentsWithCount,
   UserProfile,
 } from '../../../../dashboard-server/src/types';
 
@@ -35,23 +36,26 @@ const Dashboard: FC<IDashboard> = ({ departments }) => {
           </div>
           <div className={styles['dashboard']}>
             {departments.map(
-              ({ _count, profiles, names }: DepartmentWithProfiles, index) => (
+              (
+                { count, profiles, name, companyName }: DepartmentsWithCount,
+                index,
+              ) => (
                 <div className={styles['dashboard-item']} key={index}>
                   <div className={styles['dashboard-item__department']}>
-                    {COMPANY_LABEL} {names?.company?.name}
+                    {COMPANY_LABEL} {companyName}
                   </div>
                   <div className={styles['dashboard-item__department']}>
-                    {DEPARTMENT_LABEL} {names?.name}
+                    {DEPARTMENT_LABEL} {name}
                   </div>
                   <div className={styles['dashboard-item__staff']}>
-                    {STAFF_LABEL} {_count.departmentId}
+                    {STAFF_LABEL} {count}
                   </div>
                   <div className={styles['dashboard-item__open-profiles']}>
                     <Button
                       variant='primary'
                       size='sm'
                       onClick={() => {
-                        setProfiles(profiles);
+                        setProfiles(profiles ?? EMPTY_ARRAY);
                         setModalShow(true);
                       }}
                     >

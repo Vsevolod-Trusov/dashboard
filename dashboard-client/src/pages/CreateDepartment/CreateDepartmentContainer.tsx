@@ -2,14 +2,17 @@ import { FC, useEffect, useState } from 'react';
 import { useFormik } from 'formik';
 
 import { CREATE_DEPARTMENT_INITIALS, EMPTY_ARRAY } from 'common';
-import { client } from 'index';
 import { departmentValidationSchema } from 'validation';
+import { trpc } from 'index';
 
 import CreateDepartment from './CreateDepartment';
 import { CompanyType } from '../../../../dashboard-server/src/types';
 
 const CreateDepartmentContainer: FC = () => {
   const [companies, setCompanyNames] = useState<CompanyType[]>(EMPTY_ARRAY);
+  const { mutate: createDepartment } =
+    trpc.departments.createDepartment.useMutation();
+  const { data: companiesData } = trpc.companies.getCompanyNames.useQuery();
 
   const formik = useFormik({
     initialValues: CREATE_DEPARTMENT_INITIALS,
@@ -19,27 +22,19 @@ const CreateDepartmentContainer: FC = () => {
     onSubmit: async (values) => {
       const { name, companyId, description } = values;
 
-      const response = await client.departments.createDepartment.mutate({
+      createDepartment({
         name,
         companyId,
         description,
       });
-
-      if (!response) {
-        alert('wrong create department request');
-      } else {
-        alert('Successfully');
-      }
     },
   });
 
   useEffect(() => {
     (async function () {
-      const companyNames = await client.companies.getCompanyNames.query();
-
-      setCompanyNames(companyNames);
+      setCompanyNames(companiesData ?? EMPTY_ARRAY);
     })();
-  }, []);
+  }, [companiesData]);
 
   return <CreateDepartment formik={formik} companies={companies} />;
 };

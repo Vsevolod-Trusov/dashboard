@@ -1,7 +1,6 @@
 import { FC } from 'react';
 
 import signIn from 'components/SignInForm/styles';
-
 import styles from './styles';
 import { ISignUpForm, IStaffValues } from './types';
 import { Field, FormikProvider } from 'formik';
@@ -12,7 +11,7 @@ const SignUpForm: FC<ISignUpForm<IStaffValues>> = ({
   handleSelectedCompany,
 }) => {
   const { errors, touched, handleSubmit } = formik;
-  console.log(forCreateStaff?.departmentNames);
+
   return (
     <div className={styles['form-wrapper']}>
       <FormikProvider value={formik}>
@@ -167,8 +166,3 @@ const SignUpForm: FC<ISignUpForm<IStaffValues>> = ({
   );
 };
 export default SignUpForm;
-
-/*
-
-
-*/

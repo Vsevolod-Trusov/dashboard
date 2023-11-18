@@ -26,25 +26,31 @@ const Navbar: FC = () => (
         <a className={styles['links-container__item']} href={ROUTES.STAFF}>
           {NAVBAR.STAFF}
         </a>
+        <div
+          className={`${styles['links-container']} ${styles['container-small']} ${styles['layout']}`}
+        >
+          <a
+            className={styles['links-container__item']}
+            href={ROUTES.CREATE_STAFF}
+          >
+            Create Staff
+          </a>
+          <a
+            className={styles['links-container__item']}
+            href={ROUTES.CREATE_DEPARTMENT}
+          >
+            Create Department
+          </a>
+          {/*  */}
+          {/* 
+        
         <a className={styles['links-container__item']} href={ROUTES.SIGN_IN}>
           {NAVBAR.SIGN_IN}
         </a>
       </div>
-      <div
-        className={`${styles['links-container']} ${styles['container-small']} ${styles['layout']}`}
-      >
-        <a
-          className={styles['links-container__item']}
-          href={ROUTES.CREATE_STAFF}
-        >
-          Create Staff
-        </a>
-        <a
-          className={styles['links-container__item']}
-          href={ROUTES.CREATE_DEPARTMENT}
-        >
-          Create Department
-        </a>
+      
+         */}
+        </div>
       </div>
     </div>
   </nav>

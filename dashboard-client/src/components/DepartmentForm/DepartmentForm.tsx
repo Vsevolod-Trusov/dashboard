@@ -3,8 +3,8 @@ import { FC } from 'react';
 import signIn from 'components/SignInForm/styles';
 import { ICreateDepartment } from 'pages/CreateDepartment/types';
 import { styles } from 'components/SignUpForm';
-
 import { Field, FormikProvider } from 'formik';
+
 import { IDepartmentValues } from './types';
 
 const DepartmentForm: FC<ICreateDepartment<IDepartmentValues>> = ({
@@ -47,7 +47,7 @@ const DepartmentForm: FC<ICreateDepartment<IDepartmentValues>> = ({
               name='description'
               type='text'
               placeholder='Description'
-              fullWidth
+              as='textarea'
               touched={touched}
               error={errors.description}
             />
@@ -57,8 +57,8 @@ const DepartmentForm: FC<ICreateDepartment<IDepartmentValues>> = ({
             <label htmlFor={styles['field-wrapper__select']}>Company</label>
             <Field
               className={styles['field-wrapper__select']}
-              id='companyName'
-              name='companyName'
+              id='companyId'
+              name='companyId'
               as='select'
               touched={touched}
               errors={errors.companyId}
@@ -66,9 +66,9 @@ const DepartmentForm: FC<ICreateDepartment<IDepartmentValues>> = ({
               {companies ? (
                 <>
                   <option value='enter...'>Enter...</option>
-                  {companies.map(({ name, id }, index) => (
-                    <option key={index} value={id}>
-                      {name}
+                  {companies.map((company) => (
+                    <option key={company?.id} value={company?.id}>
+                      {company?.name}
                     </option>
                   ))}
                 </>
