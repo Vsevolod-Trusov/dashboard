@@ -1,11 +1,10 @@
 import { TRPCError } from '@trpc/server';
-import { Prisma } from '@prisma/client';
+import { z } from 'zod';
 
 import { createDepartmentSchema, removeDepartmentSchema } from '../validation';
 import { DepartmentWithProfiles } from '../types';
 import { procedure, router } from '../trpc';
 import { prisma } from '../prisma';
-import { z } from 'zod';
 
 export const departmentRouter = router({
   getDepartments: procedure.query(
@@ -43,6 +42,20 @@ export const departmentRouter = router({
               },
               take: 5,
             });
+            const departmentNameAndCompanyName =
+              await prisma.department.findUnique({
+                select: {
+                  name: true,
+                  company: {
+                    select: {
+                      name: true,
+                    },
+                  },
+                },
+                where: {
+                  id: department.departmentId || '',
+                },
+              });
 
             const modifiedProfiles = profiles.map(profile => ({
               ...profile,
@@ -52,14 +65,13 @@ export const departmentRouter = router({
             return {
               ...department,
               profiles: modifiedProfiles,
+              names: departmentNameAndCompanyName,
             };
           }),
         );
 
-        console.log(departmentsWithProfiles);
         return departmentsWithProfiles as unknown as DepartmentWithProfiles[];
       } catch (exception) {
-        console.log(`[ Department Service ]: ${exception}`);
         return new TRPCError({
           message: 'Internal server error',
           code: 'INTERNAL_SERVER_ERROR',
@@ -74,7 +86,6 @@ export const departmentRouter = router({
 
       return count;
     } catch (exception) {
-      console.log(exception);
       return new TRPCError({
         message: 'Internal server error',
         code: 'INTERNAL_SERVER_ERROR',
@@ -122,9 +133,14 @@ export const departmentRouter = router({
           },
         });
 
-        const departmentInfo = await prisma.department.findFirst({
+        const departmentInfo = await prisma.department.findUnique({
           select: {
             name: true,
+            company: {
+              select: {
+                name: true,
+              },
+            },
             createdAt: true,
           },
           where: {
@@ -145,11 +161,13 @@ export const departmentRouter = router({
           departmentName: departmentInfo?.name,
           createdAt: createdAtField,
           profiles: modifiedProfiles,
+          names: {
+            name: departmentInfo?.name,
+            company: departmentInfo?.company,
+          },
         };
       }),
     );
-
-    console.log('TASK 2:', departmentsWithManagers);
 
     return departmentsWithManagers;
   }),
@@ -182,14 +200,6 @@ export const departmentRouter = router({
 
         return created;
       } catch (exception) {
-        if (exception instanceof Prisma.PrismaClientKnownRequestError) {
-          if (exception.code === 'P2002') {
-            console.log(
-              'There is a unique constraint violation, a new user cannot be created with this email',
-            );
-          }
-        }
-        console.log('created error');
         throw new TRPCError({
           message: 'Such email already exists',
           code: 'BAD_REQUEST',
@@ -198,7 +208,7 @@ export const departmentRouter = router({
     }),
 
   getDepartmentsNames: procedure.input(z.string()).query(async ({ input }) => {
-    console.log('INPUT', input);
+    console.log(input);
     const departmentsNames = await prisma.department.findMany({
       select: {
         name: true,
@@ -207,6 +217,8 @@ export const departmentRouter = router({
         companyId: input,
       },
     });
+
+    console.log(departmentsNames[0]);
     return departmentsNames.map(department => department.name);
   }),
 
@@ -215,7 +227,7 @@ export const departmentRouter = router({
     .query(async ({ input }) => {
       const department = await prisma.department.findFirst({
         where: {
-          name: input.name,
+          id: input.id,
         },
       });
 
@@ -235,9 +247,9 @@ export const departmentRouter = router({
         },
       });
 
-      const deleted = await prisma.department.deleteMany({
+      const deleted = await prisma.department.delete({
         where: {
-          name: input.name,
+          id: department.id,
         },
       });
 
