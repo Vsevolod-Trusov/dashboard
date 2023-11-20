@@ -218,35 +218,37 @@ export const departmentRouter = router({
   createDepartment: authenticatedProcedure
     .input(createDepartmentSchema)
     .mutation(async ({ input }) => {
-      try {
-        const { name, description, companyId } = input;
+      const { name, description, companyId } = input;
 
-        const company = await prisma.company.findUnique({
-          where: {
-            id: companyId,
-          },
+      const company = await prisma.company.findUnique({
+        where: {
+          id: companyId,
+        },
+      });
+
+      if (!company)
+        throw new TRPCError({
+          message: 'No such company',
+          code: 'BAD_REQUEST',
         });
 
-        if (!company)
-          throw new TRPCError({
-            message: 'No such company',
-            code: 'BAD_REQUEST',
-          });
-
-        const created = await prisma.department.create({
+      let created;
+      try {
+        created = await prisma.department.create({
           data: {
             name,
             companyId: companyId,
             description,
           },
         });
-        return created;
       } catch (exception) {
         throw new TRPCError({
           message: 'Such email already exists',
           code: 'BAD_REQUEST',
         });
       }
+
+      return created;
     }),
 
   getDepartmentsNames: procedure.input(z.string()).query(async ({ input }) => {
