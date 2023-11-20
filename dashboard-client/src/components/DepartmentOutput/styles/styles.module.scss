@@ -1,0 +1,53 @@
+@import 'assets/styles/_variables.module.scss';
+
+.modal-header {
+  padding: 5px 10px;
+}
+
+.modal-body {
+  display: flex;
+  flex-direction: column;
+  min-width: 100%;
+  row-gap: 10px;
+  padding: 5px 10px;
+}
+
+.data-template {
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
+
+  &__item {
+    display: flex;
+    align-self: center;
+    min-width: 70%;
+    padding: 10px;
+    justify-content: space-between;
+    border-radius: 10px;
+    &:hover {
+      background-color: $dashboard-item;
+      transition: 0.3s;
+    }
+  }
+}
+
+.item-template {
+  display: flex;
+  flex-direction: column;
+  align-self: center;
+  min-width: 70%;
+  row-gap: 10px;
+
+  &__element {
+    display: flex;
+    align-self: center;
+    min-width: 100%;
+    padding: 10px;
+    justify-content: space-between;
+    border-radius: 10px;
+    &:hover {
+      background-color: $dashboard-item;
+      transition: 0.3s;
+    }
+  }
+}
