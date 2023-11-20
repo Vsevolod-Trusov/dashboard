@@ -4,7 +4,12 @@ import { Button, Modal } from 'react-bootstrap';
 import { UserProfile } from '../../../../dashboard-server/src/types';
 import styles from './styles';
 
-const ProfilesOutput = ({ data, ...props }: any) => {
+const ProfilesOutput = ({
+  data,
+  selectProfile,
+  openProfileOutput,
+  ...props
+}: any) => {
   return (
     <Modal
       {...props}
@@ -18,7 +23,15 @@ const ProfilesOutput = ({ data, ...props }: any) => {
       </Modal.Header>
       <Modal.Body className={styles['modal-body']}>
         {(data ?? EMPTY_ARRAY).map((profile: UserProfile, index: any) => (
-          <div className={styles['modal-body__item']} key={profile.email}>
+          <div
+            className={styles['modal-body__item']}
+            key={profile.email}
+            onClick={() => {
+              selectProfile(profile);
+              props.onHide();
+              openProfileOutput();
+            }}
+          >
             <div>
               {++index}. {profile.email}
             </div>
