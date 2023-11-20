@@ -1,12 +1,11 @@
-import ReactDOM from 'react-dom/client';
 import { createTRPCReact } from '@trpc/react-query';
+import ReactDOM from 'react-dom/client';
 
-import 'bootstrap/dist/css/bootstrap.min.css';
-import 'bootstrap-icons/font/bootstrap-icons.css';
-import 'assets/styles/index.module.scss';
 import App from 'App';
+import 'assets/styles/index.module.scss';
+import 'bootstrap-icons/font/bootstrap-icons.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
-import { AppRouter } from '../../dashboard-server/src/main';
 import {
   ArcElement,
   BarElement,
@@ -16,6 +15,7 @@ import {
   LinearScale,
   Tooltip,
 } from 'chart.js';
+import { AppRouter } from '../../dashboard-server/src/main';
 
 Chart.register(
   CategoryScale,

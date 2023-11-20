@@ -1,19 +1,49 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-
-import { trpc } from 'index';
-import { useState } from 'react';
-import { BACKEND_URL } from 'common';
-import { RouterProvider } from 'react-router-dom';
-import Router from 'router';
 import { httpBatchLink } from '@trpc/client';
+import { useState } from 'react';
+import { Provider } from 'react-redux';
+import { RouterProvider } from 'react-router-dom';
 
-const Component = () => {
-  const [queryClient] = useState(() => new QueryClient());
+import { TRPCError } from '@trpc/server';
+import { BACKEND_URL, ROUTES } from 'common';
+import { trpc } from 'index';
+import { SnackbarProvider } from 'notistack';
+import Router from 'router';
+import store from 'store';
+
+const App = () => {
+  const [queryClient] = useState(
+    () =>
+      new QueryClient({
+        defaultOptions: {
+          queries: {
+            onError: (error: any) => {
+              if ((error as TRPCError).message == 'UNAUTHORIZED') {
+                document.location.href = ROUTES.SIGN_IN;
+              }
+            },
+          },
+          mutations: {
+            onError: (error: unknown) => {
+              if ((error as TRPCError).message == 'UNAUTHORIZED') {
+                document.location.href = ROUTES.SIGN_IN;
+              }
+            },
+          },
+        },
+      }),
+  );
   const [trpcClient] = useState(() =>
     trpc.createClient({
       links: [
         httpBatchLink({
           url: BACKEND_URL,
+          fetch(url, options) {
+            return fetch(url, {
+              ...options,
+              credentials: 'include',
+            });
+          },
         }),
       ],
     }),
@@ -23,10 +53,14 @@ const Component = () => {
     <>
       <trpc.Provider client={trpcClient} queryClient={queryClient}>
         <QueryClientProvider client={queryClient}>
-          <RouterProvider router={Router} />
+          <Provider store={store}>
+            <SnackbarProvider>
+              <RouterProvider router={Router} />
+            </SnackbarProvider>
+          </Provider>
         </QueryClientProvider>
       </trpc.Provider>
     </>
   );
 };
-export default Component;
+export default App;
