@@ -1,8 +1,8 @@
 import { FC } from 'react';
 
 import { DepartmentForm } from 'components';
-import { styles as dashboardStyles } from 'pages/Dashboard';
 import { IDepartmentValues } from 'components/DepartmentForm/types';
+import { styles as dashboardStyles } from 'pages/Dashboard';
 
 import { ADD_DEPARTMENT } from './constants';
 import styles from './styles';
@@ -25,9 +25,7 @@ const CreateDepartment: FC<ICreateDepartment<IDepartmentValues>> = ({
               {ADD_DEPARTMENT}
             </h2>
           </div>
-          <div className={styles['form']}>
-            <DepartmentForm formik={formik} companies={companies} />
-          </div>
+          <DepartmentForm formik={formik} companies={companies} />
         </div>
       </div>
     </div>
