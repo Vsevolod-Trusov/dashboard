@@ -1,6 +1,9 @@
-export { Navbar } from './Navbar';
-export { Template } from './Template';
-export { SignInForm } from './SignInForm';
-export { SignUpForm } from './SignUpForm';
-export { ProfilesOutput } from './ProfilesOutput';
+export { CompanyForm } from './CompanyForm';
 export { DepartmentForm } from './DepartmentForm';
+export { DepartmentOutput } from './DepartmentOutput';
+export { DropModal } from './DropModal';
+export { Navbar } from './Navbar';
+export { ProfileOutput } from './ProfileOutput';
+export { ProfilesOutput } from './ProfilesOutput';
+export { SignUpForm } from './SignUpForm';
+export { Template } from './Template';
