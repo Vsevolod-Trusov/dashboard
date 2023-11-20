@@ -1,0 +1,119 @@
+@import 'assets/styles/_variables.module.scss';
+
+.form-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 90vh;
+  background: no-repeat center/cover
+    url('../../../assets/images/sign-up-images.jpeg');
+}
+
+.form-main {
+  display: grid;
+  border: 2px solid black;
+  border-radius: 20px;
+  grid-template-columns: 1fr;
+  grid-template-rows: 0.7fr repeat(3, 0.3fr);
+  grid-auto-rows: 0.3fr;
+  row-gap: 10px;
+  column-gap: 20px;
+  padding: 20px 30px;
+  width: 450px;
+  color: $navbar-background;
+  background: white;
+  opacity: 0;
+  animation: ani 0.4s forwards;
+}
+
+@keyframes ani {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.form-title {
+  display: flex;
+  flex-direction: column;
+  row-gap: 5px;
+  padding-bottom: 15px;
+  border-bottom: 1px solid gray;
+  &__item {
+    font-size: 2rem;
+  }
+  &__second {
+    font-size: 0.8rem;
+    color: gray;
+    font-weight: 100;
+  }
+}
+
+.logo-wrapper {
+  &__item {
+    font-size: 2rem;
+  }
+}
+
+.field-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  row-gap: 5px;
+  &__input,
+  &__select {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid gray;
+    border-radius: 10px;
+    line-height: 1rem;
+  }
+}
+
+.role {
+  grid-row: 6 / span 1;
+  flex-direction: row-reverse;
+  justify-content: flex-end;
+  align-items: center;
+  column-gap: 5px;
+}
+
+.submit {
+  position: relative;
+  font-size: 0.8em;
+  &__item {
+    width: 100%;
+    z-index: 2;
+    border: none;
+    background-color: $form-color;
+    border-radius: 10px;
+    height: 30px;
+    color: white;
+    font-weight: 500;
+    letter-spacing: 1px;
+    cursor: pointer;
+    &:hover {
+      background-color: $submit-btn-hover;
+    }
+    &:active {
+      background-color: $form-color-active;
+    }
+  }
+}
+
+.links {
+  margin: 0 auto;
+  &__forgotLink {
+    font-size: 0.9em;
+    font-weight: 500;
+    color: rgb(44, 24, 128);
+    text-decoration: none;
+    padding: 8px 15px;
+    border-radius: 20px;
+    z-index: 2;
+  }
+}
