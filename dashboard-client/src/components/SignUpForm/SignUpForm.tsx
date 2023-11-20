@@ -1,9 +1,9 @@
 import { FC } from 'react';
 
-import signIn from 'components/SignInForm/styles';
+import { Field, FormikProvider } from 'formik';
+import signIn from 'pages/SignIn/styles';
 import styles from './styles';
 import { ISignUpForm, IStaffValues } from './types';
-import { Field, FormikProvider } from 'formik';
 
 const SignUpForm: FC<ISignUpForm<IStaffValues>> = ({
   formik,
@@ -20,7 +20,7 @@ const SignUpForm: FC<ISignUpForm<IStaffValues>> = ({
             <div className={styles['logo-wrapper']}>
               <i className={`bi bi-box ${styles['logo-wrapper__item']}`} />
             </div>
-            <h2 className={styles['form-title__item']}>Sign up</h2>
+            <h2 className={styles['form-title__item']}>Staff</h2>
             <h3 className={styles['form-title__second']}>
               Enter your details below to create your account and get started
             </h3>
