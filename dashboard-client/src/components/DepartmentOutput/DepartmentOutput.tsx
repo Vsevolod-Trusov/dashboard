@@ -1,8 +1,11 @@
 import { Button, Modal } from 'react-bootstrap';
 
+import { IModal } from 'components/DropModal/types';
+
+import { EMPTY_STRING } from 'common';
 import styles from './styles';
 
-const DepartmentOutput = ({ department, ...props }: any) => {
+const DepartmentOutput = ({ department, ...props }: IModal) => {
   return (
     <Modal
       {...props}
@@ -19,7 +22,15 @@ const DepartmentOutput = ({ department, ...props }: any) => {
           <div key={key} className={styles['data-template']}>
             <div className={styles['data-template__item']}>
               <div>{key}</div>
-              <div>{department[key]}</div>
+              <div>
+                {
+                  <>
+                    {department
+                      ? department[key as keyof typeof department]
+                      : EMPTY_STRING}
+                  </>
+                }
+              </div>
             </div>
           </div>
         ))}

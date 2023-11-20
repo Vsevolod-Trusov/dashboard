@@ -1,5 +1,6 @@
 import { FormikProps } from 'formik';
 
+import { ChangeEvent } from 'react';
 import { CompanyType } from '../../../../dashboard-server/src/types';
 
 export interface ISignUpForm<T> {
@@ -8,7 +9,7 @@ export interface ISignUpForm<T> {
     companyNames: CompanyType[];
   };
   formik: FormikProps<T>;
-  handleSelectedCompany: (data: string) => void;
+  handleSelectedCompany: (event: ChangeEvent<HTMLSelectElement>) => void;
 }
 
 export interface IStaffValues {

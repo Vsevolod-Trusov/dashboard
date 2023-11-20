@@ -1,8 +1,9 @@
 import { Button, Modal } from 'react-bootstrap';
 
 import styles from './styles';
+import { IModal } from './types';
 
-const DropModal = ({ dropAim, ...props }: any) => {
+const DropModal = ({ dropAim, ...props }: IModal) => {
   return (
     <Modal
       {...props}
@@ -21,8 +22,8 @@ const DropModal = ({ dropAim, ...props }: any) => {
         <Button
           className='btn btn-danger'
           onClick={() => {
-            props.handleDelete();
-            props.onHide();
+            props.handleDelete && props.handleDelete();
+            props.onHide && props.onHide();
           }}
         >
           Delete

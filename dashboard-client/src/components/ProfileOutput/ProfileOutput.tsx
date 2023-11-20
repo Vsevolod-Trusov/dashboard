@@ -1,9 +1,11 @@
 import { Button, Modal } from 'react-bootstrap';
 
+import { IModal } from 'components/DropModal/types';
+
 import { NO_MANAGER, NO_PROFILE } from './constants';
 import styles from './styles';
 
-const ProfilesOutput = ({ profile, forManager, ...props }: any) => {
+const ProfileOutput = ({ profile, forManager, ...props }: IModal) => {
   return (
     <Modal
       {...props}
@@ -53,4 +55,4 @@ const ProfilesOutput = ({ profile, forManager, ...props }: any) => {
     </Modal>
   );
 };
-export default ProfilesOutput;
+export default ProfileOutput;

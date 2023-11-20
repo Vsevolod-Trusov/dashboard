@@ -1,6 +1,8 @@
 import { EMPTY_ARRAY } from 'common';
 import { Button, Modal } from 'react-bootstrap';
 
+import { IModal } from 'components/DropModal/types';
+
 import { UserProfile } from '../../../../dashboard-server/src/types';
 import styles from './styles';
 
@@ -9,7 +11,7 @@ const ProfilesOutput = ({
   selectProfile,
   openProfileOutput,
   ...props
-}: any) => {
+}: IModal) => {
   return (
     <Modal
       {...props}
@@ -22,14 +24,14 @@ const ProfilesOutput = ({
         <Modal.Title id='contained-modal-title-vcenter'>Profiles</Modal.Title>
       </Modal.Header>
       <Modal.Body className={styles['modal-body']}>
-        {(data ?? EMPTY_ARRAY).map((profile: UserProfile, index: any) => (
+        {(data ?? EMPTY_ARRAY).map((profile: UserProfile, index) => (
           <div
             className={styles['modal-body__item']}
             key={profile.email}
             onClick={() => {
-              selectProfile(profile);
-              props.onHide();
-              openProfileOutput();
+              selectProfile && selectProfile(profile);
+              props.onHide && props.onHide();
+              openProfileOutput && openProfileOutput();
             }}
           >
             <div>
