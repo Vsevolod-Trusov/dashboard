@@ -8,12 +8,17 @@ export type DepartmentAggregate = {
 
 export type UserProfile = Omit<Partial<Prisma.Profile>, 'createdAt'> & {
   createdAt: string;
-} & { credentials?: Partial<Omit<Prisma.Credential, 'createdAt'>> } & {
-  company?: Partial<Omit<Prisma.Company, 'createdAt'>>;
-};
+} & {
+  name: string;
+} & Partial<{
+    companyName: string;
+  }> & { credentials?: Partial<Omit<Prisma.Credential, 'createdAt'>> } & {
+    company?: Partial<Omit<Prisma.Company, 'createdAt'>>;
+  };
 
 export type DepartmentsWithCount = Pick<Department, 'name' | 'id'> &
   Partial<{ count: number }> &
+  Partial<{ description: string }> &
   Partial<{ companyName: string }> &
   Partial<{
     profiles: UserProfile[];
