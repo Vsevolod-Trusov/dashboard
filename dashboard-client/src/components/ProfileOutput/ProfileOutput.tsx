@@ -1,9 +1,9 @@
 import { Button, Modal } from 'react-bootstrap';
 
+import { NO_MANAGER, NO_PROFILE } from './constants';
 import styles from './styles';
-import { NO_MANAGER } from './constants';
 
-const ProfilesOutput = ({ profile, ...props }: any) => {
+const ProfilesOutput = ({ profile, forManager, ...props }: any) => {
   return (
     <Modal
       {...props}
@@ -14,7 +14,7 @@ const ProfilesOutput = ({ profile, ...props }: any) => {
     >
       <Modal.Header className={styles['modal-header']} closeButton>
         <Modal.Title id='contained-modal-title-vcenter'>
-          {'Manager'}
+          {forManager ? 'Manager' : 'Profile'}
         </Modal.Title>
       </Modal.Header>
       <Modal.Body className={styles['modal-body']}>
@@ -44,7 +44,7 @@ const ProfilesOutput = ({ profile, ...props }: any) => {
             ))}
           </>
         ) : (
-          <div>{NO_MANAGER}</div>
+          <div>{forManager ? NO_MANAGER : NO_PROFILE}</div>
         )}
       </Modal.Body>
       <Modal.Footer>
