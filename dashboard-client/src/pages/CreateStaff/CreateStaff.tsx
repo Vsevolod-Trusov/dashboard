@@ -1,10 +1,10 @@
 import { FC } from 'react';
 
-import { styles as dashboardStyles } from 'pages/Dashboard';
-import { IStaffValues } from 'components/SignUpForm';
 import { SignUpForm } from 'components';
+import { IStaffValues } from 'components/SignUpForm';
+import styles from 'pages/CreateDepartment/styles';
+import { styles as dashboardStyles } from 'pages/Dashboard';
 
-import styles from './styles';
 import { ADD_STAFF } from './constants';
 import { ICreateStaff } from './types';
 
@@ -27,16 +27,14 @@ const CreateStaff: FC<ICreateStaff<IStaffValues>> = ({
               {ADD_STAFF}
             </h2>
           </div>
-          <div className={styles['form']}>
-            <SignUpForm
-              formik={formik}
-              forCreateStaff={{
-                departmentNames,
-                companyNames,
-              }}
-              handleSelectedCompany={handleSelectedCompany}
-            />
-          </div>
+          <SignUpForm
+            formik={formik}
+            forCreateStaff={{
+              departmentNames,
+              companyNames,
+            }}
+            handleSelectedCompany={handleSelectedCompany}
+          />
         </div>
       </div>
     </div>

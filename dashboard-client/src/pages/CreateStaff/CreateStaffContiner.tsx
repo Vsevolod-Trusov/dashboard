@@ -1,21 +1,30 @@
-import { FC, useEffect, useState } from 'react';
 import { useFormik } from 'formik';
+import { FC, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import { CREATE_STAFF_INITIALS, EMPTY_ARRAY, EMPTY_STRING } from 'common';
+import {
+  CREATE_STAFF_INITIALS,
+  EMPTY_ARRAY,
+  EMPTY_STRING,
+  NOTISTACK_DURATION,
+  ROUTES,
+} from 'common';
 import { trpc } from 'index';
 import { staffValidationSchema } from 'validation';
 
-import CreateStaff from './CreateStaff';
+import { enqueueSnackbar } from 'notistack';
 import { CompanyType } from '../../../../dashboard-server/src/types';
+import CreateStaff from './CreateStaff';
 
 const CreateStaffContainer: FC = () => {
+  const navigate = useNavigate();
   const [departmentsNames, setDepartmentsNames] =
     useState<string[]>(EMPTY_ARRAY);
   const [companyNames, setCompanyNames] = useState<CompanyType[]>(EMPTY_ARRAY);
   const [companyId, setCompanyId] = useState<string>(EMPTY_STRING);
   const { refetch } = trpc.departments.getDepartmentsNames.useQuery(companyId);
   const { data: companyData } = trpc.companies.getCompanyNames.useQuery();
-  const { mutate: signIn } = trpc.users.sigUp.useMutation();
+  const { mutate: signIn, error, isSuccess } = trpc.users.signUp.useMutation();
 
   const formik = useFormik({
     initialValues: CREATE_STAFF_INITIALS,
@@ -35,10 +44,12 @@ const CreateStaffContainer: FC = () => {
       } = values;
 
       if (password !== confirm) {
-        alert('Wrong Cnfirm. Try again');
+        enqueueSnackbar('wrong confirm password, try again', {
+          variant: 'error',
+          autoHideDuration: NOTISTACK_DURATION,
+        });
       }
 
-      alert(values);
       signIn({
         name: username,
         lastname,
@@ -62,6 +73,22 @@ const CreateStaffContainer: FC = () => {
   useEffect(() => {
     setCompanyNames(companyData ?? EMPTY_ARRAY);
   }, [companyData]);
+
+  useEffect(() => {
+    if (isSuccess) {
+      enqueueSnackbar('Staff added', {
+        variant: 'success',
+        autoHideDuration: NOTISTACK_DURATION,
+      });
+      navigate(ROUTES.STAFF);
+    }
+  }, [isSuccess]);
+
+  useEffect(() => {
+    if (error) {
+      enqueueSnackbar(error.message, { variant: 'error' });
+    }
+  }, [error]);
 
   return (
     <CreateStaff
