@@ -5,3 +5,6 @@ node_modules
 .prettierrc
 .vscode
 ./node_modules
+./dist
+./.idea
+./prisma
