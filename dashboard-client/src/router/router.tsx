@@ -4,7 +4,10 @@ import {
   createRoutesFromElements,
 } from 'react-router-dom';
 
+import { BASE_NAME, ROUTES } from 'common';
+import { Template } from 'components';
 import {
+  CreateCompany,
   CreateDepartment,
   CreateStaff,
   Dashboard,
@@ -12,8 +15,6 @@ import {
   SignIn,
   Staff,
 } from 'pages';
-import { BASE_NAME, ROUTES } from 'common';
-import { Template } from 'components';
 
 const Router = createBrowserRouter(
   createRoutesFromElements(
@@ -21,9 +22,10 @@ const Router = createBrowserRouter(
       <Route path={ROUTES.MAIN} element={<Dashboard />} />
       <Route path={ROUTES.DEPARTMENTS} element={<Department />} />
       <Route path={ROUTES.STAFF} element={<Staff />} />
-      <Route path={ROUTES.SIGN_IN} element={<SignIn />} />
       <Route path={ROUTES.CREATE_STAFF} element={<CreateStaff />} />
       <Route path={ROUTES.CREATE_DEPARTMENT} element={<CreateDepartment />} />
+      <Route path={ROUTES.CREATE_COMPANY} element={<CreateCompany />} />
+      <Route path={ROUTES.SIGN_IN} element={<SignIn />} />
     </Route>,
   ),
   { basename: BASE_NAME },
