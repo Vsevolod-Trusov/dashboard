@@ -1,1 +1,1 @@
-export const BACKEND_URL = 'http://localhost:8000/trpc';
+export const BACKEND_URL = 'https://dashboard-backend-471z.onrender.com/trpc';
