@@ -1,9 +1,9 @@
 import { FC } from 'react';
 
-import signIn from 'components/SignInForm/styles';
-import { ICreateDepartment } from 'pages/CreateDepartment/types';
 import { styles } from 'components/SignUpForm';
 import { Field, FormikProvider } from 'formik';
+import { ICreateDepartment } from 'pages/CreateDepartment/types';
+import signIn from 'pages/SignIn/styles';
 
 import { IDepartmentValues } from './types';
 
@@ -20,7 +20,7 @@ const DepartmentForm: FC<ICreateDepartment<IDepartmentValues>> = ({
             <div className={styles['logo-wrapper']}>
               <i className={`bi bi-box ${styles['logo-wrapper__item']}`} />
             </div>
-            <h2 className={styles['form-title__item']}>Sign up</h2>
+            <h2 className={styles['form-title__item']}>Department</h2>
             <h3 className={styles['form-title__second']}>
               Enter your details below to create your account and get started
             </h3>
