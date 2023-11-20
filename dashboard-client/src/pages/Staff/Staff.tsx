@@ -1,5 +1,5 @@
 /* eslint-disable no-extra-boolean-cast */
-import { FC } from 'react';
+import { ChangeEvent, FC } from 'react';
 import { Button, Table } from 'react-bootstrap';
 
 import { EMPTY_STRING, NO_DATA } from 'common';
@@ -46,7 +46,7 @@ const Staff: FC<IStaff> = ({
                     className={`${signUpStyles['field-wrapper__input']} ${styles['for-staff-page']}`}
                     type='text'
                     placeholder='Search by name'
-                    onInput={async (e: React.ChangeEvent<HTMLInputElement>) => {
+                    onInput={async (e: ChangeEvent<HTMLInputElement>) => {
                       await setSearchName(e.target.value);
                       clearTimeout(timer);
                       const t = setTimeout(function () {

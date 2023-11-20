@@ -20,7 +20,6 @@ const InfoPanel: FC<
   }
 > = ({ departments, forDepartments, forStaff }) => {
   const staffData = useSelector(selectStatistics);
-  console.log('STATIS', staffData);
   const data = forStaff
     ? {
         labels: Object.keys(staffData),
