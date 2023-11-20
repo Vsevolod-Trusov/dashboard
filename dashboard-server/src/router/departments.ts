@@ -3,7 +3,7 @@ import { z } from 'zod';
 
 import { EMPTY_STRING, TOP_NOTES } from '../common';
 import { prisma } from '../prisma';
-import { procedure, router } from '../trpc';
+import { authenticatedProcedure, procedure, router } from '../trpc';
 import { DepartmentsWithCount } from '../types';
 import { getDate } from '../utils';
 import { createDepartmentSchema, removeDepartmentSchema } from '../validation';
@@ -40,14 +40,31 @@ export const departmentRouter = router({
         const departmentsWithProfiles = await Promise.all(
           modifiedProfiles.map(async department => {
             const profiles = await prisma.profile.findMany({
+              select: {
+                email: true,
+                createdAt: true,
+                credentials: {
+                  select: {
+                    name: true,
+                    lastname: true,
+                  },
+                },
+                company: {
+                  select: {
+                    name: true,
+                  },
+                },
+                department: {
+                  select: {
+                    name: true,
+                  },
+                },
+              },
               where: {
                 departmentId: department.id,
               },
               orderBy: {
                 createdAt: 'desc',
-              },
-              include: {
-                credentials: true,
               },
               take: TOP_NOTES,
             });
@@ -56,6 +73,8 @@ export const departmentRouter = router({
               await prisma.department.findUnique({
                 select: {
                   name: true,
+                  createdAt: true,
+                  description: true,
                   company: {
                     select: {
                       name: true,
@@ -68,13 +87,21 @@ export const departmentRouter = router({
               });
 
             const modifiedProfiles = profiles.map(profile => ({
-              ...profile,
-              createdAt: `${profile.createdAt.toLocaleDateString()} ${profile.createdAt.toLocaleTimeString()}`,
+              email: profile.email,
+              name: profile.credentials.name,
+              lastname: profile.credentials.lastname,
+              companyName: profile.company?.name,
+              departmentName: profile.department?.name,
+              createdAt: getDate(profile.createdAt),
             }));
 
             return {
               ...department,
               profiles: modifiedProfiles,
+              description: departmentNameAndCompanyName?.description,
+              createdAt: getDate(
+                departmentNameAndCompanyName?.createdAt ?? new Date(),
+              ),
               name: departmentNameAndCompanyName?.name,
               companyName: departmentNameAndCompanyName?.company.name,
             };
@@ -109,13 +136,39 @@ export const departmentRouter = router({
       select: {
         id: true,
         name: true,
+        description: true,
         company: {
           select: {
             name: true,
           },
         },
         createdAt: true,
-        profiles: true,
+        profiles: {
+          select: {
+            email: true,
+            createdAt: true,
+            credentials: {
+              select: {
+                name: true,
+                lastname: true,
+              },
+            },
+            company: {
+              select: {
+                name: true,
+              },
+            },
+            department: {
+              select: {
+                name: true,
+              },
+            },
+          },
+          where: {
+            isHeader: true,
+          },
+          take: 1,
+        },
       },
     });
 
@@ -125,7 +178,11 @@ export const departmentRouter = router({
         companyName: company.name,
         createdAt: getDate(department.createdAt),
         profiles: department.profiles.map(profile => ({
-          ...profile,
+          email: profile.email,
+          name: profile.credentials.name,
+          lastname: profile.credentials.lastname,
+          companyName: profile.company?.name,
+          departmentName: profile.department?.name,
           createdAt: getDate(profile.createdAt),
         })),
       }),
@@ -158,7 +215,7 @@ export const departmentRouter = router({
     return departmentsWithManagers;
   }),
 
-  createDepartment: procedure
+  createDepartment: authenticatedProcedure
     .input(createDepartmentSchema)
     .mutation(async ({ input }) => {
       try {
@@ -205,12 +262,12 @@ export const departmentRouter = router({
     return departmentsNames.map(department => department.name);
   }),
 
-  deleteDepartment: procedure
+  deleteDepartment: authenticatedProcedure
     .input(removeDepartmentSchema)
-    .query(async ({ input }) => {
+    .mutation(async ({ input }) => {
       const department = await prisma.department.findFirst({
         where: {
-          id: input.id,
+          id: input,
         },
       });
 
@@ -230,12 +287,10 @@ export const departmentRouter = router({
         },
       });
 
-      const deleted = await prisma.department.delete({
+      await prisma.department.delete({
         where: {
           id: department.id,
         },
       });
-
-      return deleted;
     }),
 });

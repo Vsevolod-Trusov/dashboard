@@ -1,7 +1,9 @@
 import { TRPCError } from '@trpc/server';
 
-import { procedure, router } from '../trpc';
+import { z } from 'zod';
+
 import { prisma } from '../prisma';
+import { authenticatedProcedure, procedure, router } from '../trpc';
 
 export const companyRouter = router({
   getCompaniesCount: procedure.query(async () => {
@@ -25,4 +27,23 @@ export const companyRouter = router({
     });
     return companyNames;
   }),
+
+  createCompany: authenticatedProcedure
+    .input(z.string())
+    .mutation(async ({ input }) => {
+      try {
+        const created = await prisma.company.create({
+          data: {
+            name: input,
+          },
+        });
+
+        return created;
+      } catch (exception) {
+        throw new TRPCError({
+          message: 'Internal error',
+          code: 'INTERNAL_SERVER_ERROR',
+        });
+      }
+    }),
 });
