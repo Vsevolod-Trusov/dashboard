@@ -41,10 +41,10 @@ model Profile {
   id            String      @id @default(uuid())
   credentials   Credential  @relation(fields: [credentialsId], references: [id], onDelete: Cascade)
   credentialsId String      @unique
-  company       Company     @relation(fields: [companyId], references: [id])
-  companyId     String
+  company       Company?     @relation(fields: [companyId], references: [id])
+  companyId     String?
   department    Department? @relation(fields: [departmentId], references: [id])
-  departmentId  String?
+  departmentId  String?     
   email         String      @unique
   role          String
   isHeader      Boolean     @default(false)
