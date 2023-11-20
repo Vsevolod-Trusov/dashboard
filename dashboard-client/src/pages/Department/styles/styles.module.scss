@@ -15,9 +15,7 @@
 
 .departments-item {
   display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: repeat(3, 30px);
-  grid-auto-rows: 50px;
+  grid-template-columns: 1fr 0.1fr;
   padding: 15px 5px;
   border: 1px solid black;
   flex: 1 1 33%;
@@ -26,6 +24,20 @@
   box-shadow:
     rgba(0, 0, 0, 0.1) 0px 10px 15px -3px,
     rgba(0, 0, 0, 0.05) 0px 4px 6px -2px;
+
+  &:hover {
+    background-color: $dashboard-item_hover;
+  }
+  &:active {
+    background-color: $dashboard-item;
+    transition: 0.2s;
+  }
+}
+
+.departments-item-wrapper {
+  display: grid;
+  grid-template-rows: repeat(3, 30px);
+  grid-auto-rows: 50px;
 
   &__department-value {
     align-self: center;
@@ -41,4 +53,8 @@
     align-self: center;
     justify-self: center;
   }
+}
+
+.departments-button-wrapper {
+  font-size: 0.8rem;
 }
