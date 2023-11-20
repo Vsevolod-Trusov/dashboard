@@ -10,6 +10,4 @@ export const createDepartmentSchema = z.object({
   description: z.string(),
 });
 
-export const removeDepartmentSchema = z.object({
-  id: z.string(),
-});
+export const removeDepartmentSchema = z.string();

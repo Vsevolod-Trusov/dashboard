@@ -12,5 +12,11 @@ export const signUpSchema = z.object({
 });
 
 export const removeUserSchema = z.object({
-  email: z.string().email(),
+  id: z.string(),
+});
+
+export const signInSchema = z.object({
+  email: z.string(),
+  role: z.string(),
+  password: z.string(),
 });
