@@ -10,13 +10,11 @@ export interface IStaff {
   handleDelete: () => void;
   setProfileOutput: Dispatch<SetStateAction<boolean>>;
   profileOutput: boolean;
-  setSelectedProfile: React.Dispatch<
-    React.SetStateAction<UserProfile | undefined>
-  >;
+  setSelectedProfile: Dispatch<SetStateAction<UserProfile | undefined>>;
   selectedProfile?: UserProfile | undefined;
-  setTimer: React.Dispatch<React.SetStateAction<NodeJS.Timer | undefined>>;
+  setTimer: Dispatch<SetStateAction<NodeJS.Timer | undefined>>;
   timer?: NodeJS.Timer;
-  setSearchName: React.Dispatch<React.SetStateAction<string | undefined>>;
+  setSearchName: Dispatch<SetStateAction<string | undefined>>;
   searchName?: string;
   handleSearch: () => void;
   handleGetAll: () => void;

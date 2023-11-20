@@ -1,5 +1,5 @@
 import { useFormik } from 'formik';
-import { FC, useEffect, useState } from 'react';
+import { ChangeEvent, FC, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 import {
@@ -63,10 +63,10 @@ const CreateStaffContainer: FC = () => {
     },
   });
 
-  const handleSelectedCompany = async (e: any) => {
+  const handleSelectedCompany = async (e: ChangeEvent<HTMLSelectElement>) => {
     formik.handleChange(e);
     await setCompanyId(e.target.value);
-    const { data: departmentsData } = await refetch(e.target.value);
+    const { data: departmentsData } = await refetch(); // e.currentTarget.value
     setDepartmentsNames(departmentsData ?? EMPTY_ARRAY);
   };
 
