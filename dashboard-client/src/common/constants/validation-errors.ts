@@ -9,4 +9,5 @@ export enum VALIDATION_ERRORS {
   REQUIRED_CONFIRM = 'required confirm',
   INVALID_DESCRIPTION = 'invalid description',
   MAX_DESCRIPTION = 'MAX LENGTH is 300',
+  INVALID_ROLE = 'invalid role',
 }
