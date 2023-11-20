@@ -1,2 +1,6 @@
 ﻿dashboard-server/dist
+dashboard-server/node_modules
+dashboard-client/node_modules
+dashboard-server/.vscode
+dashboard-client/.vscode
 dashboard-server/.idea
