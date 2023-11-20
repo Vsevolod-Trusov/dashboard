@@ -1,9 +1,10 @@
-import { FC, useContext } from 'react';
+import { FC } from 'react';
 import { Doughnut } from 'react-chartjs-2';
+import { useSelector } from 'react-redux';
 
-import { EMPTY_ARRAY } from 'common';
-import { StatisticsContext } from 'context';
+import { EMPTY_ARRAY, NO_DATA } from 'common';
 import { IDashboard } from 'pages/Dashboard/types';
+import { selectStatistics } from 'store';
 
 import dashboardStyles from '../../styles';
 import {
@@ -18,7 +19,8 @@ const InfoPanel: FC<
     forStaff?: boolean;
   }
 > = ({ departments, forDepartments, forStaff }) => {
-  const staffData = useContext(StatisticsContext);
+  const staffData = useSelector(selectStatistics);
+  console.log('STATIS', staffData);
   const data = forStaff
     ? {
         labels: Object.keys(staffData),
@@ -76,7 +78,31 @@ const InfoPanel: FC<
         </h2>
       </div>
       <div className={styles['info-panel-wrapper']}>
-        <Doughnut data={data} options={options} />
+        {forStaff ? (
+          <>
+            {!staffData.companiesCount &&
+            !staffData.departmentsCount &&
+            !staffData.staffCount ? (
+              <p className={styles['no-data-item']}>{NO_DATA}</p>
+            ) : (
+              <Doughnut data={data} options={options} />
+            )}
+          </>
+        ) : (
+          <>
+            {departments?.length ? (
+              <>
+                {departments[0].count ? (
+                  <Doughnut data={data} options={options} />
+                ) : (
+                  <p className={styles['no-data-item']}>{NO_DATA}</p>
+                )}
+              </>
+            ) : (
+              <p className={styles['no-data-item']}>{NO_DATA}</p>
+            )}
+          </>
+        )}
       </div>
     </div>
   );

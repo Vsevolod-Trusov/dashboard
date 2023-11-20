@@ -20,3 +20,19 @@
   min-width: 100%;
   justify-content: space-between;
 }
+
+.no-data-item {
+  text-align: center;
+}
+
+.no-data-item-block {
+  margin: 0 10px;
+  background-color: $dashboard-item;
+  border-radius: 10px;
+  border: 1px solid #000;
+  padding: 10px;
+}
+
+.dashboard-mod {
+  width: 100%;
+}

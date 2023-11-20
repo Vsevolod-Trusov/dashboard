@@ -1,7 +1,9 @@
-import { FC, useContext } from 'react';
+import { FC } from 'react';
 
-import { StatisticsContext } from 'context';
+import { NO_DATA } from 'common';
 import { styles as dashboardStyles } from 'pages/Dashboard';
+import { useSelector } from 'react-redux';
+import { selectStatistics } from 'store';
 
 import {
   COMPANIES_LABEL,
@@ -13,7 +15,7 @@ import styles from './styles';
 
 const Statistics: FC = () => {
   const { companiesCount, departmentsCount, staffCount } =
-    useContext(StatisticsContext);
+    useSelector(selectStatistics);
 
   return (
     <div className={styles['info-panel']}>
@@ -23,18 +25,24 @@ const Statistics: FC = () => {
         </h2>
       </div>
       <div className={styles['info-panel-wrapper']}>
-        <div className={styles['statistics-content']}>
-          <div>{COMPANIES_LABEL}</div>
-          <div>{companiesCount}</div>
-        </div>
-        <div className={styles['statistics-content']}>
-          <div>{DEPARTMENTS_LABEL}</div>
-          <div>{departmentsCount}</div>
-        </div>
-        <div className={styles['statistics-content']}>
-          <div>{STAFF_LABEL}</div>
-          <div>{staffCount}</div>
-        </div>
+        {!companiesCount && !departmentsCount && !staffCount ? (
+          <p className={styles['no-data-item']}>{NO_DATA}</p>
+        ) : (
+          <>
+            <div className={styles['statistics-content']}>
+              <div>{COMPANIES_LABEL}</div>
+              <div>{companiesCount}</div>
+            </div>
+            <div className={styles['statistics-content']}>
+              <div>{DEPARTMENTS_LABEL}</div>
+              <div>{departmentsCount}</div>
+            </div>
+            <div className={styles['statistics-content']}>
+              <div>{STAFF_LABEL}</div>
+              <div>{staffCount}</div>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );

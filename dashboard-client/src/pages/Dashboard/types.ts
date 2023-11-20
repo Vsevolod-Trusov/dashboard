@@ -1,3 +1,5 @@
+import { Dispatch, SetStateAction } from 'react';
+
 import { DepartmentsWithCount } from '../../../../dashboard-server/src/types';
 
 export interface IStatistics {
@@ -8,4 +10,6 @@ export interface IStatistics {
 
 export interface IDashboard {
   departments: DepartmentsWithCount[];
+  setDepartmentId: Dispatch<SetStateAction<string>>;
+  handleDelete: () => void;
 }

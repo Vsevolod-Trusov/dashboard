@@ -1,12 +1,20 @@
-import { FC, useState } from 'react';
+import { FC, SyntheticEvent, useState } from 'react';
 import { Button } from 'react-bootstrap';
 
-import { ProfilesOutput } from 'components';
-import { EMPTY_ARRAY } from 'common';
+import { EMPTY_ARRAY, NO_DATA } from 'common';
+import {
+  DepartmentOutput,
+  DropModal,
+  ProfileOutput,
+  ProfilesOutput,
+} from 'components';
 
-import { IDashboard } from './types';
-import styles from './styles';
+import {
+  DepartmentsWithCount,
+  UserProfile,
+} from '../../../../dashboard-server/src/types';
 import { InfoPanel, Statistics } from './components';
+import { styles as infoPanel } from './components/InfoPanel';
 import {
   COMPANY_LABEL,
   DASHBOARD_TITLE,
@@ -14,16 +22,22 @@ import {
   OPEN_MODAL_BUTTON_LABEL,
   STAFF_LABEL,
 } from './constants';
-import {
-  DepartmentWithProfiles,
-  DepartmentsWithCount,
-  UserProfile,
-} from '../../../../dashboard-server/src/types';
+import styles from './styles';
+import { IDashboard } from './types';
 
-const Dashboard: FC<IDashboard> = ({ departments }) => {
+const Dashboard: FC<IDashboard> = ({
+  departments,
+  handleDelete,
+  setDepartmentId,
+}) => {
   const [modalShow, setModalShow] = useState(false);
+  const [profileOutput, setProfileOutput] = useState(false);
+  const [departmentOutput, setDepartmentOutput] = useState(false);
+  const [selectedProfile, setSelectedProfile] = useState<UserProfile>();
+  const [selectedDepartment, setSelectedDepartment] =
+    useState<DepartmentsWithCount>();
+  const [dropModalShow, setDropModalShow] = useState(false);
   const [profiles, setProfiles] = useState<UserProfile[]>(EMPTY_ARRAY);
-
   return (
     <div className={styles['template-wrapper']}>
       <div className={styles['template']}>
@@ -35,41 +49,118 @@ const Dashboard: FC<IDashboard> = ({ departments }) => {
             </h2>
           </div>
           <div className={styles['dashboard']}>
-            {departments.map(
-              (
-                { count, profiles, name, companyName }: DepartmentsWithCount,
-                index,
-              ) => (
-                <div className={styles['dashboard-item']} key={index}>
-                  <div className={styles['dashboard-item__department']}>
-                    {COMPANY_LABEL} {companyName}
-                  </div>
-                  <div className={styles['dashboard-item__department']}>
-                    {DEPARTMENT_LABEL} {name}
-                  </div>
-                  <div className={styles['dashboard-item__staff']}>
-                    {STAFF_LABEL} {count}
-                  </div>
-                  <div className={styles['dashboard-item__open-profiles']}>
-                    <Button
-                      variant='primary'
-                      size='sm'
+            {departments.length ? (
+              <>
+                {departments.map(
+                  (
+                    {
+                      id,
+                      count,
+                      profiles,
+                      name,
+                      companyName,
+                      createdAt,
+                      description,
+                    }: DepartmentsWithCount,
+                    index,
+                  ) => (
+                    <div
+                      className={styles['dashboard-item']}
+                      key={index}
                       onClick={() => {
-                        setProfiles(profiles ?? EMPTY_ARRAY);
-                        setModalShow(true);
+                        setSelectedDepartment({
+                          id,
+                          count,
+                          name,
+                          companyName,
+                          description: description?.substring(0, 20),
+                          createdAt,
+                        });
+                        setDepartmentOutput(true);
                       }}
                     >
-                      {OPEN_MODAL_BUTTON_LABEL}
-                    </Button>
-                  </div>
-                </div>
-              ),
+                      <div className={styles['dashboard-item-wrapper']}>
+                        <div
+                          className={
+                            styles['dashboard-item-wrapper__department']
+                          }
+                        >
+                          {COMPANY_LABEL} {companyName}
+                        </div>
+                        <div
+                          className={
+                            styles['dashboard-item-wrapper__department']
+                          }
+                        >
+                          {DEPARTMENT_LABEL} {name}
+                        </div>
+                        <div
+                          className={styles['dashboard-item-wrapper__staff']}
+                        >
+                          {STAFF_LABEL} {count}
+                        </div>
+                        <div
+                          className={
+                            styles['dashboard-item-wrapper__open-profiles']
+                          }
+                        >
+                          <Button
+                            variant='primary'
+                            size='sm'
+                            onClick={(e: SyntheticEvent) => {
+                              if (e.stopPropagation) e.stopPropagation();
+                              setProfiles(profiles ?? EMPTY_ARRAY);
+                              setModalShow(true);
+                            }}
+                          >
+                            {OPEN_MODAL_BUTTON_LABEL}
+                          </Button>
+                        </div>
+                      </div>
+                      <button
+                        type='button'
+                        className={`btn-close btn-danger ${styles['dashboard-button-wrapper']}`}
+                        aria-label='Close'
+                        onClick={(e: SyntheticEvent) => {
+                          if (e.stopPropagation) e.stopPropagation();
+                          setDepartmentId(id);
+                          setDropModalShow(true);
+                        }}
+                      ></button>
+                    </div>
+                  ),
+                )}
+              </>
+            ) : (
+              <div
+                className={`${infoPanel['no-data-item']} ${infoPanel['no-data-item-block']} ${infoPanel['dashboard-mod']}`}
+              >
+                {NO_DATA}
+              </div>
             )}
           </div>
           <ProfilesOutput
             data={profiles}
             show={modalShow}
             onHide={() => setModalShow(false)}
+            selectProfile={setSelectedProfile}
+            openProfileOutput={() => setProfileOutput(true)}
+          />
+          <ProfileOutput
+            profile={selectedProfile}
+            show={profileOutput}
+            onHide={() => setProfileOutput(false)}
+          />
+          <DepartmentOutput
+            department={selectedDepartment}
+            show={departmentOutput}
+            onHide={() => setDepartmentOutput(false)}
+          />
+          <DropModal
+            dropAim='department'
+            handleDelete={handleDelete}
+            show={dropModalShow}
+            onHide={() => setDropModalShow(false)}
           />
         </div>
         <Statistics />
