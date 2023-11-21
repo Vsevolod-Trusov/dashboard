@@ -246,7 +246,12 @@ export const userRouter = router({
         code: 'BAD_REQUEST',
       });
 
-    ctx.res.cookie('user', JSON.stringify({ email, password, role }));
+    ctx.res.cookie('user', JSON.stringify({ email, password, role }), {
+      maxAge: 1 * 1 * 60 * 60 * 1000,
+      httpOnly: true,
+      sameSite: 'none',
+      secure: true,
+    });
   }),
 
   deleteUser: authenticatedProcedure
