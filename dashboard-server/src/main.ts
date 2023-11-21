@@ -13,7 +13,7 @@ const port = process.env.PORT || DEFAULT_PORT;
 const appRouter = router;
 
 app.use(cookieParser());
-app.use(cors({ origin: '*', credentials: true }));
+app.use(cors({ origin: true, credentials: true }));
 
 app.use(
   ROUTES.TRPC,
