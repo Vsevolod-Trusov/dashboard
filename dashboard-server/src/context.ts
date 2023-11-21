@@ -1,11 +1,14 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { inferAsyncReturnType } from '@trpc/server';
-import * as trpcExpress from '@trpc/server/adapters/express';
+import { CreateExpressContextOptions } from '@trpc/server/adapters/express';
+import { Request } from 'express';
+import { Session } from 'express-session';
 
-const createContext = ({
-  req,
-  res,
-}: trpcExpress.CreateExpressContextOptions) => {
+type ExpressRequest = Omit<CreateExpressContextOptions, 'req'> & {
+  req: Request & { session: Session };
+};
+
+const createContext = ({ req, res }: ExpressRequest) => {
   return { req, res };
 };
 
