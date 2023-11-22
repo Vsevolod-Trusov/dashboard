@@ -9,4 +9,4 @@ export enum ROUTES {
   CREATE_COMPANY = '/company-form',
 }
 
-export const BASE_NAME = '/';
+export const BASE_NAME = '/dashboard-client';

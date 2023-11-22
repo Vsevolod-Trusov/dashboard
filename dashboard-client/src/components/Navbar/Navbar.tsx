@@ -1,15 +1,13 @@
-import { enqueueSnackbar } from 'notistack';
 import { FC } from 'react';
-import { useCookies } from 'react-cookie';
 import { useNavigate } from 'react-router-dom';
 
-import { NAVBAR, NOTISTACK_DURATION, ROUTES } from 'common';
+import { NAVBAR, ROUTES } from 'common';
 
 import styles from './styles';
 
 const Navbar: FC = () => {
-  const removeCookie = useCookies(['user'])[2];
   const navigate = useNavigate();
+
   return (
     <nav className={styles['navbar']}>
       <div className={styles['navbar-logo']}>
@@ -32,7 +30,7 @@ const Navbar: FC = () => {
             </a>
             <a
               className={styles['links-container__item']}
-              href={ROUTES.DEPARTMENTS}
+              onClick={() => navigate(ROUTES.DEPARTMENTS)}
             >
               {NAVBAR.DEPARTMENTS}
             </a>
@@ -76,10 +74,15 @@ const Navbar: FC = () => {
                 className={`bi bi-building-add ${styles['links-container__item']} ${styles['links-container-icon']}`}
               />
             </a>
-            <a
+            {/* <a
               className={styles['links-container__item']}
               onClick={() => {
-                removeCookie('user');
+                removeCookie('user', {
+                  maxAge: 1 * 1 * 60 * 60 * 1000,
+                  httpOnly: false,
+                  sameSite: 'none',
+                  secure: true,
+                });
                 enqueueSnackbar('Logout successfully', {
                   variant: 'success',
                   autoHideDuration: NOTISTACK_DURATION,
@@ -89,7 +92,7 @@ const Navbar: FC = () => {
               <i
                 className={`bi bi-box-arrow-right ${styles['links-container__item']} ${styles['links-container-icon']}`}
               />
-            </a>
+            </a> */}
           </div>
         </div>
       </div>

@@ -2,7 +2,7 @@
   "name": "dashboard-client",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://vsevolod-trusov.github.io/dashboard/dashboard-client",
+  "homepage": "https://vsevolod-trusov.github.io/dashboard-client",
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.7",
     "@tanstack/react-query": "^4.36.1",
