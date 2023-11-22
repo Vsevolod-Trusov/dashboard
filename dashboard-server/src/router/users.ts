@@ -248,7 +248,7 @@ export const userRouter = router({
 
     ctx.res.cookie('user', JSON.stringify({ email, password, role }), {
       maxAge: 1 * 1 * 60 * 60 * 1000,
-      httpOnly: true,
+      httpOnly: false,
       sameSite: 'none',
       secure: true,
     });
